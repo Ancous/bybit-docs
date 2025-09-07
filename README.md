@@ -328,6 +328,12 @@ UTA и UTA (pro) — это по сути одинаковые режимы, н�
 ### Изменения в использовании API для UTA 2.0
 
 <table class="iksweb">
+	    <colgroup>
+            <col style="width: 50px;">
+            <col style="width: 20px;">
+            <col style="width: 20px;">
+            <col style="width: 20px;">
+        </colgroup>
 		<tr>
 			<td rowspan="2">Категория API</td>
 			<td rowspan="2">API</td>
