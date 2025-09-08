@@ -62,6 +62,13 @@
   - [Обновить API ключ демо-аккаунта](#id60)
   - [Получить информацию о API ключе демо-аккаунта](#id61)
   - [Удалить API ключ демо-аккаунта](#id62)
+- [Получить статус системы](#id63)
+  - [Конечная точка](#id64)
+  - [Примеры запроса](#id65)
+  - [Параметры запроса](#id66)
+  - [Примеры ответа](#id67)
+  - [Параметры ответа](#id68)
+ 
 
 ## Введение<p id="id1"></p>
 
@@ -703,148 +710,148 @@ Websocket: `wss://stream-demo.bybit.com` (обратите внимание, ч�
 
 <table class="iksweb">
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>Категория</td>
+			<td>Название</td>
+			<td>Эндпоинт</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td>Market</td>
+			<td>Все</td>
+			<td>Все эндпоинты</td>
 		</tr>
 		<tr>
-			<td rowspan="10"></td>
-			<td></td>
-			<td></td>
+			<td rowspan="10">Position</td>
+			<td><a href="#id1">Place Order</a></td>
+			<td>/v5/order/create</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Amend Order</a></td>
+			<td>/v5/order/amend</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Cancel order</a></td>
+			<td>/v5/order/cancel</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Open Orders</a></td>
+			<td>/v5/order/realtime</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Cancel All Orders</a></td>
+			<td>/v5/order/cancel-all</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Order History</a></td>
+			<td>/v5/order/history</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Trade History</a></td>
+			<td>/v5/execution/list</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Batch Place Order</a></td>
+			<td>/v5/order/create-batch</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Batch Amend Order</a></td>
+			<td>/v5/order/amend-batch</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Batch Cancel Order</a></td>
+			<td>/v5/order/cancel-batch</td>
 		</tr>
 		<tr>
-			<td rowspan="7"></td>
-			<td></td>
-			<td></td>
+			<td rowspan="7">Position</td>
+			<td><a href="#id1">Get Position Info</a></td>
+			<td>/v5/position/list</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Leverage</a></td>
+			<td>/v5/position/set-leverage</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Switch Position Mode</a></td>
+			<td>/v5/position/switch-mode</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Trading Stop</a></td>
+			<td>/v5/position/trading-stop</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Auto Add Margin</a></td>
+			<td>/v5/position/set-auto-add-margin</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Add Or Reduce Margin</a></td>
+			<td>/v5/position/add-margin</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Closed PnL</a></td>
+			<td>/v5/position/closed-pnl</td>
 		</tr>
 		<tr>
-			<td rowspan="9"></td>
-			<td></td>
-			<td></td>
+			<td rowspan="9">Account</td>
+			<td><a href="#id1">Get Wallet Balance</a></td>
+			<td>/v5/account/wallet-balance</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Borrow History</a></td>
+			<td>/v5/account/borrow-history</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Collateral Coin</a></td>
+			<td>/v5/account/set-collateral-switch</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Collateral Info</a></td>
+			<td>/v5/account/collateral-info</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Coin Greeks</a></td>
+			<td>/v5/asset/coin-greeks</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Account Info</a></td>
+			<td>/v5/account/info</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Transaction Log</a></td>
+			<td>/v5/account/transaction-log</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Margin Mode</a></td>
+			<td>/v5/account/set-margin-mode</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Spot Hedging</a></td>
+			<td>/v5/account/set-hedging-mode</td>
 		</tr>
 		<tr>
-			<td rowspan="2"></td>
-			<td></td>
-			<td></td>
+			<td rowspan="2">Asset</td>
+			<td><a href="#id1">Get Delivery Record</a></td>
+			<td>/v5/asset/delivery-record</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get USDC Session Settlement</a></td>
+			<td>/v5/asset/settlement-record</td>
 		</tr>
 		<tr>
-			<td rowspan="3"></td>
-			<td></td>
-			<td></td>
+			<td rowspan="3">Spot Margin Trade</td>
+			<td><a href="#id1">Toggle Margin Trade</a></td>
+			<td>/v5/spot-margin-trade/switch-mode</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Set Leverage</a></td>
+			<td>/v5/spot-margin-trade/set-leverage</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">Get Status And Leverage</a></td>
+			<td>/v5/spot-margin-uta/status</td>
 		</tr>
 		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
+			<td><a href="#id1">WS Private</a></td>
+			<td>order,execution,position,wallet,greeks</td>
+			<td>/v5/private</td>
 		</tr>
 </table>
 
@@ -965,7 +972,180 @@ none
 >Информация:  
 >Используйте ключ основного аккаунта для вызова интерфейса, домен должен быть "api.bybit.com".
 
+## Получить статус системы<p id="id63"></p>
 
+### Конечная точка<p id="id64"></p>
+
+`/v5/system/status`
+
+### Примеры запроса<p id="id65"></p>
+
+  - HTTP
+    ```
+    GET /v5/system/status HTTP/1.1
+    Host: api.bybit.com
+    ```
+
+### Параметры запроса<p id="id66"></p>
+
+|Параметр     	|Обязательный	|Тип   	  |Комме                              |По умолчанию|
+|---------------|---------------|---------|-----------------------------------|------------|
+|id	            |false      	|string   |ID. Уникальный идентификатор       |-           |
+|[state](#idd)	|false      	|string   |Состояние системы                  |-           |	
+
+### Пример ответа<p id="id67"></p>
+
+```
+{
+    "retCode": 0,
+    "retMsg": "",
+    "result": {
+        "list": [
+            {
+                "id": "4d95b2a0-587f-11f0-bcc9-56f28c94d6ea",
+                "title": "t06",
+                "state": "completed",
+                "begin": "1751596902000",
+                "end": "1751597011000",
+                "href": "",
+                "serviceTypes": [
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "product": [
+                    1,
+                    2
+                ],
+                "uidSuffix": [],
+                "maintainType": 1,
+                "env": 1
+            },
+            {
+                "id": "19bb6f82-587f-11f0-bcc9-56f28c94d6ea",
+                "title": "t05",
+                "state": "completed",
+                "begin": "1751254200000",
+                "end": "1751254500000",
+                "href": "",
+                "serviceTypes": [
+                    1,
+                    4
+                ],
+                "product": [
+                    1
+                ],
+                "uidSuffix": [],
+                "maintainType": 3,
+                "env": 1
+            },
+            {
+                "id": "25f4bc8c-533c-11f0-bcc9-56f28c94d6ea",
+                "title": "t04",
+                "state": "completed",
+                "begin": "1751017967000",
+                "end": "1751018096000",
+                "href": "",
+                "serviceTypes": [
+                    2
+                ],
+                "product": [
+                    2
+                ],
+                "uidSuffix": [],
+                "maintainType": 1,
+                "env": 1
+            },
+            {
+                "id": "679a9c5f-533b-11f0-bcc9-56f28c94d6ea",
+                "title": "t03",
+                "state": "completed",
+                "begin": "1751017532000",
+                "end": "1751017658000",
+                "href": "",
+                "serviceTypes": [
+                    5,
+                    4
+                ],
+                "product": [
+                    1,
+                    2
+                ],
+                "uidSuffix": [],
+                "maintainType": 2,
+                "env": 1
+            },
+            {
+                "id": "c8990f96-5332-11f0-8fd3-c241b123dd9e",
+                "title": "t02",
+                "state": "completed",
+                "begin": "1751013817000",
+                "end": "1751013890000",
+                "href": "",
+                "serviceTypes": [
+                    5,
+                    4,
+                    3,
+                    2,
+                    1
+                ],
+                "product": [
+                    4,
+                    3,
+                    2,
+                    1
+                ],
+                "uidSuffix": [],
+                "maintainType": 2,
+                "env": 1
+            },
+            {
+                "id": "f9d6842d-5331-11f0-8fd3-c241b123dd9e",
+                "title": "t01",
+                "state": "completed",
+                "begin": "1751012688000",
+                "end": "1751012760000",
+                "href": "",
+                "serviceTypes": [
+                    1,
+                    2,
+                    3,
+                    4,
+                    5
+                ],
+                "product": [
+                    1,
+                    2,
+                    3,
+                    4
+                ],
+                "uidSuffix": [],
+                "maintainType": 3,
+                "env": 2
+            }
+        ]
+    },
+    "retExtInfo": {},
+    "time": 1751858399649
+}
+```
+
+### Параметры ответа<p id="id68"></p>
+
+|Параметр	           |Тип             |Комментарии                                                                                                           |
+|----------------------|----------------|----------------------------------------------------------------------------------------------------------------------|
+|id                    |string    	    |Уникальный идентификатор записи                                                                                       |
+|title                 |string    	    |Название обслуживания                                                                                                 |
+|[state](#idd)     	   |string    	    |Состояние системы                                                                                                     |
+|begin                 |string    	    |Время начала обслуживания в формате timestamp (миллисекунды)                                                          |
+|end                   |string    	    |Время окончания обслуживания в формате timestamp (миллисекунды). До окончания — прогнозируемое, после — фактическое   |
+|href                  |string    	    |Ссылка на подробности обслуживания. По умолчанию пустая строка                                                        |
+|[serviceTypes](#ide)  |array<int>      |Типы сервисов (Service Type), которые затрагивает обслуживание                                                        |
+|[product](#idf)       |array<int>      |Затронутые продукты                                                                                                   |
+|uidSuffix             |array<int>      |Затронутые конечные номера UID пользователей                                                                          |
+|[maintainType](#idg)  |string          |Тип технического обслуживания                                                                                         |
+|[env](#idh)           |string    	    |Окружение (Environment), в котором проводится обслуживание                                                            |
 
 ## Определения перечислений
 
@@ -1068,3 +1248,37 @@ none
 - Институциональный трейдинг
 - Інституціональний трейдинг
 - Делистинг
+
+### state<p id="idd"></p>
+
+- scheduled (Запланирован)
+- ongoing (Выполняется или "Активен")
+- completed (Завершен)
+- canceled (Отменен)
+
+### serviceTypes<p id="ide"></p>
+
+- 1 Trading service (Торговый сервис)
+- 2 Trading service via http request (Торговый сервис через HTTP-запрос)
+- 3 Trading service via websocket (Торговый сервис через WebSocket)
+- 4 Private websocket stream (Приватный поток WebSocket)
+- 5 Market data service (Сервис рыночных данных)
+
+### product<p id="idf"></p>
+
+- 1 Futures (Фьючерсы)
+- 2 Spot (Спот)
+- 3 Option (Опционы)
+- 4 Spread (Спред)
+
+### maintainType<p id="idg"></p>
+
+- 1 Planned maintenance (Запланированное обслуживание)
+- 2 Temporary maintenance (Временное обслуживание)
+- 3 Incident (Инцидент)
+
+### env<p id="idh"></p>
+
+- 1 Production (Продакшн)
+- 2 Production Demo service (Демо-сервис продакшена)
+
