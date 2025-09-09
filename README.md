@@ -1186,7 +1186,7 @@ none
 
     url = "https://api-testnet.bybit.com/v5/market/time"
 
-    response = requests.request("GET", url)
+    response = requests.get(url)
 
     print(response.text)
     ```
@@ -1255,7 +1255,7 @@ none
         "end": 1670608800000
     }
     
-    response = requests.request("GET", url, params=parameters)
+    response = requests.get(url, params=parameters)
 
     print(response.text)
     ```
@@ -1376,7 +1376,7 @@ none
         "limit": 1
     }
     
-    response = requests.request("GET", url, params=parameters)
+    response = requests.get(url, params=parameters)
 
     print(response.text)
     ```
