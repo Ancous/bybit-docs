@@ -1242,7 +1242,7 @@ none
     ```
     import requests
 
-    url = "https://api-testnet.bybit.com/v5/market/time"
+    url = "https://api-testnet.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=60&start=1670601600000&end=1670608800000"
 
     payload={}
     headers = {}
