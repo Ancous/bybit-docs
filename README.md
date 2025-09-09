@@ -1184,9 +1184,12 @@ none
     ```
     import requests
 
-    url = "https://api-testnet.bybit.com/v5/market/time"
+    base_url = "https://api-testnet.bybit.com"
+    end_point = "/v5/market/time"
 
-    response = requests.get(url)
+    complete_request = base_url + end_point
+
+    response = requests.get(url=complete_request)
 
     print(response.text)
     ```
@@ -1245,8 +1248,10 @@ none
     ```
     import requests
 
-    url = "https://api-testnet.bybit.com/v5/market/kline"
+    base_url = "https://api-testnet.bybit.com"
+    end_point = "/v5/market/kline"
 
+    complete_request = base_url + end_point
     parameters = {
         "category": "inverse",
         "symbol": "BTCUSDT",
@@ -1255,7 +1260,7 @@ none
         "end": 1670608800000
     }
     
-    response = requests.get(url, params=parameters)
+    response = requests.get(url=complete_request, params=parameters)
 
     print(response.text)
     ```
@@ -1365,8 +1370,10 @@ none
     ```
     import requests
 
-    url = "https://api-testnet.bybit.com/v5/market/mark-price-kline"
+    base_url = "https://api-testnet.bybit.com"
+    end_point = "/v5/market/mark-price-kline"
 
+    complete_request = base_url + end_point
     parameters = {
         "category": "linear",
         "symbol": "BTCUSDT",
@@ -1376,7 +1383,7 @@ none
         "limit": 1
     }
     
-    response = requests.get(url, params=parameters)
+    response = requests.get(url=complete_request, params=parameters)
 
     print(response.text)
     ```
