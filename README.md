@@ -533,7 +533,7 @@ API-ключи, созданные самостоятельно, работаю�
     GET /v5/announcements/index?locale=en-US&limit=1 HTTP/1.1
     Host: api.bybit.com
     ```
-  - Python
+  - pybit
     ```
     from pybit.unified_trading import HTTP
     session = HTTP(testnet=True)
@@ -1186,10 +1186,7 @@ none
 
     url = "https://api-testnet.bybit.com/v5/market/time"
 
-    payload={}
-    headers = {}
-
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.request("GET", url)
 
     print(response.text)
     ```
@@ -1250,8 +1247,6 @@ none
 
     url = "https://api-testnet.bybit.com/v5/market/kline"
 
-    payload={}
-    headers = {}
     parameters = {
         "category": "inverse",
         "symbol": "BTCUSDT",
@@ -1260,7 +1255,7 @@ none
         "end": 1670608800000
     }
     
-    response = requests.request("GET", url, data=payload, headers=headers, params=parameters)
+    response = requests.request("GET", url, params=parameters)
 
     print(response.text)
     ```
@@ -1372,8 +1367,6 @@ none
 
     url = "https://api-testnet.bybit.com/v5/market/mark-price-kline"
 
-    payload={}
-    headers = {}
     parameters = {
         "category": "linear",
         "symbol": "BTCUSDT",
@@ -1383,7 +1376,7 @@ none
         "limit": 1
     }
     
-    response = requests.request("GET", url, data=payload, headers=headers, params=parameters)
+    response = requests.request("GET", url, params=parameters)
 
     print(response.text)
     ```
