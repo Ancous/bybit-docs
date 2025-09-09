@@ -81,6 +81,12 @@
     - [Параметры запроса](#id79)
     - [Примеры ответа](#id80)
     - [Параметры ответа](#id81)
+  - [Получить свечи Mark Price](#id82)
+    - [Конечная точка](#id83)
+    - [Примеры запроса](#id84)
+    - [Параметры запроса](#id85)
+    - [Примеры ответа](#id86)
+    - [Параметры ответа](#id87)
 
 ## Введение<p id="id1"></p>
 
@@ -1242,12 +1248,19 @@ none
     ```
     import requests
 
-    url = "https://api-testnet.bybit.com/v5/market/kline?category=linear&symbol=BTCUSDT&interval=60&start=1670601600000&end=1670608800000"
+    url = "https://api-testnet.bybit.com/v5/market/kline"
 
     payload={}
     headers = {}
-
-    response = requests.request("GET", url, headers=headers, data=payload)
+    parameters = {
+        "category": "inverse",
+        "symbol": "BTCUSDT",
+        "interval": "60",
+        "start": 1670601600000,
+        "end": 1670608800000
+    }
+    
+    response = requests.request("GET", url, data=payload, headers=headers, params=parameters)
 
     print(response.text)
     ```
@@ -1313,23 +1326,129 @@ none
                 "6356",
                 "0.37288112"
             ]
-    
+        ]
+    },
+    "retExtInfo": {},
+    "time": 1672025956592
+}
 ```
 
 #### Параметры ответа<p id="id81"></p>
 
 |Параметр  |Тип       |Комментарии                                                                                                                                              |
 |----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-|category  |string    |Product type                                                                                                                                             |
-|symbol    |string    |Symbol name                                                                                                                                              |
+|category  |string    |Тип продукта                                                                                                                                             |
+|symbol    |string    |Символ                                                                                                                                                   |
 |list      |array     |Массив строк индивидуальных свечей.<br>Сортируется в обратном порядке по startTime                                                                       |
 |list[0]   |string    |Время начала свечи (мс)                                                                                                                                  |
 |list[1]   |string    |Цена открытия                                                                                                                                            |
 |list[2]   |string    |Максимальная цена                                                                                                                                        |
 |list[3]   |string    |Минимальная цена                                                                                                                                         |
 |list[4]   |string    |Цена закрытия. Является последней ценой сделки, если свеча не закрыта                                                                                    |
-|list[5]   |string    |Объём торгов.<br>USDT или USDC-контракты: единица - базовая монета (например, BTC)<br>Инверсные контракты: единица - квотируемая монета (например, USD)   |
+|list[5]   |string    |Объём торгов.<br>USDT или USDC-контракты: единица - базовая монета (например, BTC)<br>Инверсные контракты: единица - квотируемая монета (например, USD)  |
 |list[6]   |string    |Оборот.<br>USDT или USDC-контракты: единица - квотируемая монета (например, USDT)<br>Инверсные контракты: единица - базовая монета (например, BTC)       |
+
+
+### Получить свечи Mark Price<p id="id82"></p>
+
+Запрос исторических свечей по [mark price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms). Графики возвращаются группами в зависимости от запрошенного интервала.
+
+>Охватывает: USDT-контракты / USDC-контракты / Инверсные контракты
+
+#### Конечная точка<p id="83"></p>
+
+`/v5/market/mark-price-kline`
+
+#### Примеры запроса<p id="id84"></p>
+
+  - HTTP
+    ```
+    GET /v5/market/mark-price-kline?category=linear&symbol=BTCUSDT&interval=15&start=1670601600000&end=1670608800000&limit=1 HTTP/1.1
+    Host: api-testnet.bybit.com
+    ```
+  - Python
+    ```
+    import requests
+
+    url = "https://api-testnet.bybit.com/v5/market/mark-price-kline"
+
+    payload={}
+    headers = {}
+    parameters = {
+        "category": "linear",
+        "symbol": "BTCUSDT",
+        "interval": "15",
+        "start": 1670601600000,
+        "end": 1670608800000,
+        "limit": 1
+    }
+    
+    response = requests.request("GET", url, data=payload, headers=headers, params=parameters)
+
+    print(response.text)
+    ```
+  - pybit
+    ```
+    from pybit.unified_trading import HTTP
+
+    session = HTTP(testnet=True)
+    print(session.get_mark_price_kline(
+        category="linear",
+        symbol="BTCUSDT",
+        interval=15,
+        start=1670601600000,
+        end=1670608800000,
+        limit=1,
+    ))
+    ```
+
+#### Параметры запроса<p id="id85"></p>
+
+|Параметр  	          |Обязательный	 |Тип   	|Комментарии                                      |По умолчанию|
+|---------------------|--------------|----------|-------------------------------------------------|------------|
+|[category](#idi)	  |false      	 |string    |Тип продукта                                     |linear      |
+|[symbol](#idj)	      |true       	 |string    |Имя символа                                      |-           |	
+|[interval](#idk)     |false      	 |string    |Интервал свечей                                  |-           |
+|start	              |false      	 |integer   |Временная метка начала (мс)                      |-           |	
+|end                  |false      	 |integer   |Временная метка окончания (мс)                   |-           |
+|limit	              |false      	 |integer   |Лимит на размер данных на страницу. [1, 1000]    |200         |	
+
+#### Пример ответа<p id="id86"></p>
+
+```
+{
+    "retCode": 0,
+    "retMsg": "OK",
+    "result": {
+        "symbol": "BTCUSDT",
+        "category": "linear",
+        "list": [
+            [
+            "1670608800000",
+            "17164.16",
+            "17164.16",
+            "17121.5",
+            "17131.64"
+            ]
+        ]
+    },
+    "retExtInfo": {},
+    "time": 1672026361839
+}
+```
+
+#### Параметры ответа<p id="id87"></p>
+
+|Параметр  |Тип       |Комментарии                                                                                                                                              |
+|----------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+|category  |string    |Тип продукта                                                                                                                                             |
+|symbol    |string    |Символ                                                                                                                                                   |
+|list      |array     |Массив строк индивидуальных свечей.<br>Сортируется в обратном порядке по startTime                                                                       |
+|list[0]   |string    |Время начала свечи (мс)                                                                                                                                  |
+|list[1]   |string    |Цена открытия                                                                                                                                            |
+|list[2]   |string    |Максимальная цена                                                                                                                                        |
+|list[3]   |string    |Минимальная цена                                                                                                                                         |
+|list[4]   |string    |Цена закрытия. Является последней ценой сделки, если свеча не закрыта                                                                                    |
 
 ## Определения перечислений
 
