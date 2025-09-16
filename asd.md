@@ -1,14 +1,14 @@
 <details>
-<summary style="display: flex; align-items: center;">
-  <span class="triangle" style="margin-left: -16px; cursor: pointer;">&#9654;</span>
+  <summary style="display: flex; align-items: center; list-style-type: none; outline: none;">
+  <span style="margin-left: -16px; cursor: pointer;">&#9654;</span>
   <a href="11.Введение.md" style="margin-left: 10px;">Ведение</a>
 </summary>
 
 - [Обзор](11.Введение.md#обзор)  
 - [Текущий охват API](11.Введение.md#текущий-охват-api)
   <details>
-  <summary style="display: flex; align-items: center;">
-    <span class="triangle" style="margin-left: -16px; cursor: pointer;">&#9654;</span>
+  <summary style="display: flex; align-items: center; list-style-type: none; outline: none;">
+    <span style="margin-left: -16px; cursor: pointer;">&#9654;</span>
     <a href="11. Введение.md#ключевые-улучшения" style="margin-left: 10px;">Ключевые улучшения</a>
   </summary>
 
@@ -24,13 +24,3 @@
   </details>
 
 </details>
-
-<script>
-  document.querySelectorAll('summary').forEach(summary => {
-    summary.addEventListener('toggle', () => {
-      const triangle = summary.querySelector('.triangle');
-      // Изменяем треугольник так, чтобы он смотрел вниз при открытии и вправо при закрытии
-      triangle.innerHTML = summary.open ? '&#9660;' : '&#9654;'; // &#9660; - треугольник вниз
-    });
-  });
-</script>
