@@ -1,4 +1,4 @@
-<details>
+<details style="padding: 0; border: none;">
   <summary style="display: flex; align-items: center; list-style-type: none; outline: none;">
   <span style="margin-left: -16px; cursor: pointer;">&#9654;</span>
   <a href="11.Введение.md" style="margin-left: 10px;">Ведение</a>
@@ -6,7 +6,7 @@
 
 - [Обзор](11.Введение.md#обзор)  
 - [Текущий охват API](11.Введение.md#текущий-охват-api)
-  <details>
+  <details style="padding: 0; border: none;">
   <summary style="display: flex; align-items: center; list-style-type: none; outline: none;">
     <span style="margin-left: -16px; cursor: pointer;">&#9654;</span>
     <a href="11. Введение.md#ключевые-улучшения" style="margin-left: 10px;">Ключевые улучшения</a>
