@@ -7,8 +7,7 @@
 
 <a id="информация"></a>
 
-Запрашивает исторические свечей по
-[mark price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms).
+Запрос исторических свечей [mark price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms).
 Графики возвращаются группами в зависимости от запрошенного интервала.
 
 >Охватывает:  

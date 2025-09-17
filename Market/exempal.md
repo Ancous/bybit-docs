@@ -29,7 +29,20 @@
 - Python
 
   ```python
+  import requests
 
+  base_url = "https://api-testnet.bybit.com"
+  end_point = "xxxxxxxxxxxxxxxxxxxxx"
+
+  complete_request = base_url + end_point
+  parameters = {
+      "category": "linear",
+      "symbol": "BTCUSDT",
+  }
+  
+  response = requests.get(url=complete_request, params=parameters, timeout=10)
+
+  print(response.json())
   ```
 
 - pybit
