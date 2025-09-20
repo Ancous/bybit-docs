@@ -3,15 +3,16 @@
 import requests
 
 base_url = "https://api-testnet.bybit.com"
-end_point = "/v5/market/premium-index-price-kline"
+end_point = "/v5/market/account-ratio"
 
 complete_request = base_url + end_point
 parameters = {
     "category": "linear",
     "symbol": "BTCUSDT",
-    "interval": "D",
-    "start": 1652112000000,
-    "end": 1652544000000
+    "period": "1h",
+    "limit": 2,
+    "startTime": "1696089600000",
+    "endTime": "1696262400000"
 }
 
 response = requests.get(url=complete_request, params=parameters, timeout=10)

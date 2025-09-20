@@ -21,7 +21,7 @@
 
 - HTTP
 
-  ```bash
+  ```http
   GET /v5/market/time HTTP/1.1
   Host: api.bybit.com
   ```

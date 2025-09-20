@@ -12,7 +12,15 @@
 группами на основе заданного интервала.
 
 >Охватывает:  
->USDT контракт / USDC контракт / Inverse контракт
+>
+>- Фьючерс USDT вечный (linear)
+>- Фьючерс USDT с датой экспирации (linear)
+>- Фьючерс USDC вечный (linear)
+>- Фьючерс USDC с датой экспирации (linear)
+>- Обратный Фьючерс USDT вечный (inverse)
+>- Обратный Фьючерс USDT с датой экспирации  (inverse)
+>- Обратный Фьючерс USDC вечный  (inverse)
+>- Обратный Фьючерс USDC с датой экспирации  (inverse)
 
 ## Конечная точка
 
@@ -24,7 +32,7 @@
 
 - HTTP
 
-  ```bash
+  ```http
   GET /v5/market/index-price-kline?category=inverse&symbol=BTCUSDZ22&interval=1&start=1670601600000&end=1670608800000&limit=2 HTTP/1.1
   Host: api-testnet.bybit.com
   ```

@@ -22,7 +22,7 @@
 
 - HTTP
 
-  ```bash
+  ```http
 
   ```
 
