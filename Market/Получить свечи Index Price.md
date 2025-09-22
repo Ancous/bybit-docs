@@ -7,8 +7,8 @@
 
 <a id="информация"></a>
 
-Запрос исторических свечи
-[индексных цен](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms). Графики возвращаются
+Запрос исторических свечей
+[index price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms). Графики возвращаются
 группами на основе заданного интервала.
 
 >Зона применения:  
