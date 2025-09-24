@@ -49,7 +49,7 @@
   import requests
 
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/order/create"
+  end_point = "xxxxx"
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
