@@ -311,6 +311,62 @@ Only used for category=linear or inverse and orderFilter=StopOrder,you can cance
 
 -----------------------------------------------------------------------------------------------------------
 
+## Получить историю ордеров
+
+Base coin, uppercase only
+UTA1.0(inverse), classic account do not support this param
+
+-----------------------------------------------------------------------------------------------------------
+
+Settle coin, uppercase only
+UTA1.0(inverse), classic account do not support this param
+
+-----------------------------------------------------------------------------------------------------------
+
+Order: active order
+StopOrder: conditional order for Futures and Spot
+tpslOrder: spot TP/SL order
+OcoOrder: spot OCO orders
+BidirectionalTpslOrder: Spot bidirectional TPSL order
+classic account spot: return Order active order by default
+Others: all kinds of orders by default
+
+-----------------------------------------------------------------------------------------------------------
+
+Classic spot: not supported
+UTA2.0, UTA1.0(except inverse): return all closed status orders if not passed
+UTA1.0(inverse), classic account(linear, inverse): return all status orders if not passed
+
+-----------------------------------------------------------------------------------------------------------
+
+The start timestamp (ms)
+startTime and endTime are not passed, return 7 days by default
+Only startTime is passed, return range between startTime and startTime+7 days
+Only endTime is passed, return range between endTime-7 days and endTime
+If both are passed, the rule is endTime - startTime <= 7 days
+
+-----------------------------------------------------------------------------------------------------------
+
+The end timestamp (ms)
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
+
+
+-----------------------------------------------------------------------------------------------------------
+
 
 
 -----------------------------------------------------------------------------------------------------------
