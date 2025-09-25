@@ -276,23 +276,38 @@ Cursor. Use the nextPageCursor token from the response to retrieve the next page
 
 -----------------------------------------------------------------------------------------------------------
 
+## Отменить все ордера
 
-
------------------------------------------------------------------------------------------------------------
-
-
-
------------------------------------------------------------------------------------------------------------
-
-
+Symbol name, like BTCUSDT, uppercase only
+linear&inverse: Required if not passing baseCoin or settleCoin
 
 -----------------------------------------------------------------------------------------------------------
 
-
+Base coin, uppercase only
+linear & inverse(classic account): If cancel all by baseCoin, it will cancel all linear & inverse orders. Required if not passing symbol or settleCoin
+linear & inverse(Unified account): If cancel all by baseCoin, it will cancel all corresponding category orders. Required if not passing symbol or settleCoin
+spot(classic account): invalid
 
 -----------------------------------------------------------------------------------------------------------
 
+Settle coin, uppercase only
+linear & inverse: Required if not passing symbol or baseCoin
+option: USDT or USDC
+Not support spot
 
+-----------------------------------------------------------------------------------------------------------
+
+category=spot, you can pass Order, tpslOrder, StopOrder, OcoOrder, BidirectionalTpslOrder
+If not passed, Order by default
+category=linear or inverse, you can pass Order, StopOrder,OpenOrder
+If not passed, all kinds of orders will be cancelled, like active order, conditional order, TP/SL order and trailing stop order
+category=option, you can pass Order,StopOrder
+If not passed, all kinds of orders will be cancelled, like active order, conditional order, TP/SL order and trailing stop order
+
+-----------------------------------------------------------------------------------------------------------
+
+Stop order type Stop
+Only used for category=linear or inverse and orderFilter=StopOrder,you can cancel conditional orders except TP/SL order and Trailing stop orders with this param
 
 -----------------------------------------------------------------------------------------------------------
 
