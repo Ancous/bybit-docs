@@ -351,7 +351,13 @@ The end timestamp (ms)
 
 -----------------------------------------------------------------------------------------------------------
 
+## Разместить пакет ордеров
 
+Order quantity
+UTA account
+Spot: set marketUnit for market order qty unit, quoteCoin for market buy by default, baseCoin for market sell by default
+Perps, Futures & Option: always use base coin as unit
+Perps & Futures: if you pass qty="0" and specify reduceOnly=true&closeOnTrigger=true, you can close the position up to maxMktOrderQty or maxOrderQty shown on Get Instruments Info of current symbol
 
 -----------------------------------------------------------------------------------------------------------
 
