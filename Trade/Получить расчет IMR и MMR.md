@@ -1,0 +1,300 @@
+- [Информация](#информация)
+- [Конечная точка](#конечная-точка)
+- [Примеры запроса](#примеры-запроса)
+- [Параметры запроса](#параметры-запроса)
+- [Пример ответа](#пример-ответа)
+- [Параметры ответа](#параметры-ответа)
+
+<a id="информация"></a>
+
+Запрос для расчета изменений IMR и MMR аккаунта UTA до и после размещения заказа.
+
+>Зона применения:  
+>
+>`option` - опцион  
+>`linear` - контракт (расчет в USDT, USDC, ...)
+>
+> - `Perpetual` - контракт без даты экспирации
+> - `Futures` - контракт с датой экспирации
+>
+>`inverse` - контракт (расчет в BTC, ETH, ...)
+>
+> - `Perpetual` - контракт без даты экспирации
+> - `Futures` - контракт с датой экспирации
+<!-- -->
+>Информация:
+>
+>- Поддерживаются только режим перекрестной маржи (Cross Margin) и режим портфельной маржи (Portfolio Margin),
+> режим изолированной маржи (isolated margin) не поддерживается.
+>- `category`=`inverse` не поддерживается в режиме перекрестной маржи (Cross Margin).
+>- Условные ордера не поддерживаются.
+
+<a id="конечная-точка"></a>
+
+## Конечная точка
+
+`/v5/order/pre-check`
+
+<a id="примеры-запроса"></a>
+
+## Примеры запроса
+
+- HTTP
+
+- HTTP
+
+  ```http
+  POST /v5/order/pre-check HTTP/1.1
+  Host: api-testnet.bybit.com
+  X-BAPI-API-KEY: "<api_key от биржи bybit>"
+  X-BAPI-SIGN: <подпись>
+  X-BAPI-TIMESTAMP: 1672211928338
+  X-BAPI-RECV-WINDOW: 5000
+  Content-Type: application/json
+
+  // Спотовый лимитный ордер с рыночным тейк-профит и стоп-лосс
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.01",
+      "price": "28000",
+      "timeInForce": "PostOnly",
+      "takeProfit": "35000",
+      "stopLoss": "27000",
+      "tpOrderType": "Market",
+      "slOrderType": "Market"
+  }
+
+  // Спотовый лимитный ордер с лимитным тейк-профит и стоп-лосс
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.01",
+      "price": "28000",
+      "timeInForce": "PostOnly",
+      "takeProfit": "35000",
+      "stopLoss": "27000",
+      "tpLimitPrice": "36000",
+      "slLimitPrice": "27500",
+      "tpOrderType": "Limit",
+      "slOrderType": "Limit"
+  }
+
+  // Спотовый обычный ордер PostOnly
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.1",
+      "price": "15600",
+      "timeInForce": "PostOnly",
+      "orderLinkId": "spot-test-01",
+      "isLeverage": 0,
+      "orderFilter": "Order"
+  }
+
+  // Спотовый ордер тейк-профит и стоп-лосс
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.1",
+      "price": "15600",
+      "triggerPrice": "15000",
+      "timeInForce": "Limit",
+      "orderLinkId": "spot-test-02",
+      "isLeverage": 0,
+      "orderFilter": "tpslOrder"
+  }
+
+  // Спотовый обычный маржинальный ордер (UTA)
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.1",
+      "price": "15600",
+      "timeInForce": "GTC",
+      "orderLinkId": "spot-test-limit",
+      "isLeverage": 1,
+      "orderFilter": "Order"
+  }
+
+  // Спотовый ордер, количество указано в валюте котировки
+  {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Market",
+      "qty": "200",
+      "timeInForce": "IOC",
+      "orderLinkId": "spot-test-04",
+      "isLeverage": 0,
+      "orderFilter": "Order"
+  }
+
+  // Открытие длинной позиции контракта perpetual (односторонний режим)
+  {
+      "category": "linear",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "1",
+      "price": "25000",
+      "timeInForce": "GTC",
+      "positionIdx": 0,
+      "orderLinkId": "usdt-test-01",
+      "reduceOnly": false,
+      "takeProfit": "28000",
+      "stopLoss": "20000",
+      "tpslMode": "Partial",
+      "tpOrderType": "Limit",
+      "slOrderType": "Limit",
+      "tpLimitPrice": "27500",
+      "slLimitPrice": "20500"
+  }
+
+  // Закрытие короткой позиции контракта perpetual (односторонний режим)
+  {
+      "category": "linear",
+      "symbol": "BTCUSDT",
+      "side": "Sell",
+      "orderType": "Limit",
+      "qty": "1",
+      "price": "30000",
+      "timeInForce": "GTC",
+      "positionIdx": 0,
+      "orderLinkId": "usdt-test-02",
+      "reduceOnly": true
+  }
+  ```
+
+- Python
+
+  ```python
+  import time
+  import hmac
+  import hashlib
+  import json
+  import requests
+
+  base_url = "https://api-testnet.bybit.com"
+  end_point = "/v5/order/pre-check"
+  complete_request = base_url + end_point
+
+  api_key = "<api_key от биржи bybit>"
+  secret_key = "<api_secret от биржи bybit>"
+  time_stamp = str(int(time.time() * 1000))
+  recv_window = "5000"
+
+  data = {
+      "category": "spot",
+      "symbol": "BTCUSDT",
+      "side": "Buy",
+      "orderType": "Limit",
+      "qty": "0.1",
+      "price": "15600",
+      "timeInForce": "PostOnly",
+      "orderLinkId": "spot-test-postonly",
+      "isLeverage": 0,
+      "orderFilter": "Order"
+  }
+
+  param_str = time_stamp + api_key + recv_window + json.dumps(data, separators=(',', ':'))
+  
+  signature = hmac.new(
+      key=secret_key.encode("utf-8"),
+      msg=param_str.encode("utf-8"),
+      digestmod=hashlib.sha256
+  ).hexdigest()
+  
+  headers = {
+    "X-BAPI-API-KEY": api_key,
+    "X-BAPI-SIGN": signature,
+    "X-BAPI-TIMESTAMP": time_stamp,
+    "X-BAPI-RECV-WINDOW": recv_window,
+  }
+
+  response = requests.post(url=complete_request, headers=headers, json=data, timeout=10)
+
+  print(response.json())
+  ```
+
+<a id="параметры-запроса"></a>
+
+## Параметры запроса
+
+|Параметр  	                  |Обязательный	 |Тип  	  |Комментарии &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;               |По умолчанию|
+|-----------------------------|------------|----------|---------------------------|------------|
+|[category](<../19.Определения значений в запросах и ответах.md#category>)	|да           |string    |***Тип продукта.***<br><br>- классический аккаунт: `spot`, `linear`, `inverse`<br>- [UTA2.0](<../13.Различные режимы аккаунтов.md#единый-торговый-аккаунт-2.0>), [UTA1.0](<../13.Различные режимы аккаунтов.md#единый-торговый-аккаунт-1.0>): `spot`, `linear`, `inverse`, `option`  |-   |
+|[symbol](<../19.Определения значений в запросах и ответах.md#symbol>)	    |да            |string    |***Имя символа.***<br><br>Только заглавными буквами |-   |
+|isLeverage  	                  |нет	 |integer   	  |***Использование займа.***<br><br>Только для `spot` торговли.<br><br>- `0`: false - спотовая торговля<br>- `1`: true - маржинальная торговля (убедитесь, что маржинальная<br>&nbsp;&nbsp;&nbsp;торговля включена, и соответствующая валюта установлена в<br>&nbsp;&nbsp;&nbsp;качестве залога).                       |`0`   |
+|side  	                  |да	 |string   	  |***Сторона сделки.***<br><br>- `Buy`<br>- `Sell`                       |-   |
+|[orderType](<../19.Определения значений в запросах и ответах.md#orderType>)  	                  |да	 |string   	  |***Тип ордера.***<br><br>- `Market`<br>- `Limit`                       |-   |
+|qty  	                  |да	 |string   	  |***Количество ордера.***<br><br>- Единый аккаунт.<br>&nbsp;&nbsp;&nbsp;&nbsp;- <ins>`spot`:</ins><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - По умолчанию рыночный ордер на покупку по стоимости.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Вы можете установить поле `marketUnit`, чтобы выбрать ордер<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;по стоимости или количеству для рыночных ордеров.<br>&nbsp;&nbsp;&nbsp;&nbsp;- <ins>`perpetual`, `futures` и `option`:</ins><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Всегда ордер по количеству<br>- Классический аккаунт.<br>&nbsp;&nbsp;&nbsp;&nbsp;- <ins>`spot`:</ins><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- По умолчанию рыночный ордер на покупку по стоимости.<br>&nbsp;&nbsp;&nbsp;&nbsp;- <ins>`perpetual` и `futures`:</ins><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - Всегда ордер по количеству.<br>- `perpetual` и `futures`.<br>&nbsp;&nbsp;&nbsp;&nbsp;- Если вы передадите `qty`="0" и укажете `reduceOnly`=`true`<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;и `closeOnTrigger`=`true`, вы можете закрыть позицию до<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`maxMktOrderQty` или `maxOrderQty`, отображаемых в<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;эндпоинте [информация об инструменте](<../Market/Получить информацию об инструментах.md>) для текущего символа.                    |-   |
+|marketUnit  	                  |нет	 |string   	  |***Выбор единицы измерения для `qty` при создании рыночных ордеров<br>на спотовом рынке для единого аккаунта.***<br><br>- `baseCoin`: при покупке BTCUSDT единица "qty" - BTC<br>- `quoteCoin`: при продаже BTCUSDT единица "qty" - USDT           |-   |
+|slippageToleranceType  	      |нет	 |string   	  |***Допуск проскальзывания.***<br><br>Тип для рыночного ордера: `TickSize`, `Percent`.<br>Поддерживаются `linear`, `inverse` и `spot`, но тейк-профит, стоп-лосс<br>и условные ордера не поддерживаются.<br>- TickSize:<br>&ensp;&ensp;- Макс. цена на покупку = ask1 + `slippageTolerance` x tickSize<br>&ensp;&ensp;- Мин. цена на продажу = bid1 - `slippageTolerance` x tickSize.<br>- Percent:<br>&ensp;&ensp;- Макс. цена на покупку = ask1 x (1 + `slippageTolerance` x 0.01)<br>&ensp;&ensp;- Мин. цена на продажу = bid1 x (1 - `slippageTolerance` x 0.01).           |-   |
+|slippageTolerance  	                  |нет	 |string   	  |***Значение допустимого проскальзывания.***<br><br>- `TickSize`: допустимый диапазон значений от 5 до 2000, только<br>&nbsp;&nbsp;&nbsp;целые числа.<br>- `Percent`: допустимый диапазон значений от 0.05% до 1%, с<br>&nbsp;&nbsp;&nbsp;точностью до двух знаков после запятой.                 |-   |
+|price  	                  |нет	 |string   	  |***Цена ордера.***<br><br>- Для рыночного ордера это поле игнорируется.<br>- Пожалуйста, проверьте минимальную цену и точность цены в<br>&nbsp;&nbsp;ответе эндпоинта с [информацией об инструменте](<../Market/Получить информацию об инструментах.md>).<br>- Если у вас есть открытая позиция, цена ордера должна быть <br>&nbsp;&nbsp;цены ликвидации.                     |-   |
+|triggerDirection  	                  |нет	 |integer   	  |***Параметр условного ордера.***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>Используется для определения ожидаемого направления условного ордера:<br>- `1`: срабатывает, когда рыночная цена поднимается до значения<br>&nbsp;&nbsp;&nbsp;`triggerPrice`<br>- `2`: срабатывает, когда рыночная цена опускается до значения<br>&nbsp;&nbsp;&nbsp;`triggerPrice`         |-   |
+|orderFilter  	                  |нет	 |string   	  |***Управление резервированием активов и поведением ордера до срабатывания.***<br><br>Действительно только для `spot` рынка.<br><br>- `Order` — обычный ордер.<BR>- `tpslOrder` — ордер Take Profit / Stop Loss на `spot`;<br>&nbsp;&nbsp;&nbsp;активы резервируются сразу, ещё до срабатывания ордера.<br>- `StopOrder` — условный ордер на спотовом рынке; активы не<br>&nbsp;&nbsp;&nbsp;резервируются до тех пор, пока цена базового актива не достигнет<br>&nbsp;&nbsp;&nbsp;цены срабатывания. После срабатывания условного ордера<br>&nbsp;&nbsp;&nbsp;необходимые активы резервируются. |`order`   |
+|triggerPrice  	                  |нет	 |string   	  |***Цена срабатывания ордеров тейк-профит/стоп-лосс у `limit` ордеров.***<br><br>- Для `perpetual`, `futures` это цена срабатывания условного ордера.<br>&nbsp;&nbsp;&nbsp;&nbsp;- Если вы ожидаете, что цена будет расти, чтобы сработал ваш<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;условный ордер, убедитесь, что:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`triggerPrice` > рыночной цены<br>&nbsp;&nbsp;&nbsp;&nbsp;- Если вы ожидаете, что цена будет падать, чтобы сработал ваш<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;условный ордер, убедитесь, что:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;`triggerPrice` > рыночной цены<br>- Для спотовой торговли это цена тейк-профит/стоп-лосс и цена<br>&nbsp;&nbsp;&nbsp;срабатывания условного ордера.        |-   |
+|[triggerBy](<../19.Определения значений в запросах и ответах.md#triggerBy>)    	                  |нет	 |string   	  |***Тип триггерной цены.***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>Параметр условного ордера для `perpetual` и `futures`.<br><br> - `LastPrice`<br>- `IndexPrice`<br>- `MarkPrice`        |-   |
+|orderIv  	                  |нет	 |string   	  |***Предполагаемая  волатильность.***<br><br>Действительно для `option`.<br><br>- Передавать десятичное знач. (для `10%` следует передавать `0.1`).<br>- Параметр `orderIv` имеет более высокий приоритет, если также<br>&nbsp;&nbsp;передан `price`.            |-   |
+|[timeInForce](<../19.Определения значений в запросах и ответах.md#timeInForce>)    	                  |нет	 |string   	  |***[Время действия ордера](https://www.bybit.com/en/help-center/article/What-Are-Time-In-Force-TIF-GTC-IOC-FOK)***<br><br>`market` order всегда использует IOC  |`GTC`   |
+|[positionIdx](<../19.Определения значений в запросах и ответах.md#positionIdx>)    	                  |нет	 |integer   	  |***Используется для идентификации позиций в различных режимах позиций.***<br><br>В режиме хеджирования этот параметр обязателен<br><br>- `0`: односторонний режим<br>- `1`: режим хеджирования для покупки<br>- `2`: режим хеджирования для продажи                        |-   |
+|orderLinkId  	                  |нет	 |string   	  |***Пользовательский ID заказа.***<br><br>Максимальная длина — 36 символов.<br> Поддерживаются комбинации цифр, букв (верхний и нижний регистр), дефисов и подчёркиваний.<br><br>-  Для `perpetual` и `futures`:<br>&nbsp;&nbsp;&nbsp;- параметр необязательный<br>&nbsp;&nbsp;&nbsp;- должен быть уникальным<br>- Для `option`<br>&nbsp;&nbsp;&nbsp;- параметр обязательный<br>&nbsp;&nbsp;&nbsp;- должен быть уникальным                   |-   |
+|takeProfit  	                  |нет	 |string   	  |***Цена тейк-профита.***<br><br>- Единый аккаунт<br>&nbsp;&nbsp;&nbsp;&nbsp;- Спотовый лимитный ордер поддерживает тейк-профит, стоп-лосс<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;или лимитный тейк-профит, лимитный стоп-лосс при создании<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ордера.                       |-   |
+|stopLoss  	                  |нет	 |string   	  |***Цена стоп-лосс.***<br><br>- Единый аккаунт<br>&nbsp;&nbsp;&nbsp;&nbsp;- Спотовый лимитный ордер поддерживает тейк-профит, стоп-лосс<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;или лимитный тейк-профит, лимитный стоп-лосс при создании<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ордера.                       |-   |
+|[tpTriggerBy](<../19.Определения значений в запросах и ответах.md#triggerBy>)    	                  |нет	 |string   	  |***Тип цены, при котором активируется тейк-профит.***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>- `MarkPrice`<br>- `IndexPrice`<br>- `LastPrice`       |`LastPrice`   |
+|[slTriggerBy](<../19.Определения значений в запросах и ответах.md#triggerBy>)    	                  |нет	 |string   	  |***Тип цены, при котором активируется стоп-лосс.***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>- `MarkPrice`<br>- `IndexPrice`<br>- `LastPrice`                       |`LastPrice`   |
+|reduceOnly  	                  |нет	 |boolean   	  |***Что такое ордер [`reduceOnly`](https://www.bybit.com/en/help-center/article/Reduce-Only-Order)?***<br><br>Действительно для `linear`, `inverse` и `option` контрактов.<br><br>Значение `true` означает, что при срабатывании этого ордера размер<br>вашей позиции может только уменьшиться.<br><br>- Вы должны указать значение `true`, если собираетесь закрыть или<br>&nbsp;&nbsp;сократить позицию.<br>- Если `reduceOnly` установлен в `true`, установить тейк-профит или<br>&nbsp;&nbsp;стоп-лосс нельзя.                     |-   |
+|closeOnTrigger  	                  |нет	 |boolean   	  |***Что такое ордер [`closeOnTrigger`](https://www.bybit.com/en/help-center/article/Close-On-Trigger-Order)?***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>- Для закрывающего ордера.<br>- Он может только уменьшить вашу позицию, но не увеличить ее.<br>- Если на счете недостаточно доступного баланса при срабатывании<br>&nbsp;&nbsp;закрывающего ордера, то другие активные ордера по аналогичным<br>&nbsp;&nbsp;контрактам будут отменены или уменьшены.<br>- Его можно использовать для обеспечения того, чтобы ваш стоп-лосс<br>&nbsp;&nbsp;уменьшал вашу позицию независимо от текущей доступной маржи.               |-   |
+|[smpType](<../19.Определения значений в запросах и ответах.md#smpType>)     |нет	 |string   	  |***Тип исполнения [SMP](<../SMP.md>).***      |-   |
+|mmp  	                  |нет	 |boolean   	  |***Защита маркет-мейкера ([`mmp`](#)).***<br><br>Действительно для `option` контрактов.<br><br>- Значение true означает установку ордера в качестве ордера защиты<br>&nbsp;&nbsp;маркет-мейкера.               |-   |
+|tpslMode  	                  |нет	 |string   	  |***Режим тейк-профит/стоп-лосс.***<br><br>Действительно для `linear` и `inverse` контрактов.<br><br>Поддерживаются лимитные ордера тейк-профит/стоп-лосс.<br>При создании лимитного тейк-профит/стоп-лосс требуется указание `tpslMode`, и он должен быть `Partial`.<br><br>- `Full`: полное закрытие позиции с помощью тейк-профит/стоп-лосс.<br>&nbsp;&nbsp;При этом тип ордера `tpOrderType` или `slOrderType` должен быть<br>&nbsp;&nbsp;`Market`.<br>- `Partial`: частичное закрытие позиции с помощью<br>&nbsp;&nbsp;тейк-профит/стоп-лосс. (так как нет опции указания размера, буду<br>&nbsp;&nbsp;созданы ордера тейк-профит/стоп-лосс на количество, которое<br>&nbsp;&nbsp;вы фактически заполнили).                    |-   |
+|tpLimitPrice  	                  |нет	 |string   	  |***Цена лимитного ордера при срабатывании тейк-профита.***<br><br>- Для `linear` и `inverse` контрактов работает только когда<br>&nbsp;&nbsp;`tpslMode`=`Partial` и `tpOrderType`=`Limit`.<br>- Для `spot`(UTA) обязательно указывать, если в ордере<br>&nbsp;&nbsp;есть `takeProfit` и `tpOrderType` установленные в `Limit`.                      |-   |
+|slLimitPrice  	                  |нет	 |string   	  |***Цена лимитного ордера при срабатывании стоп-лосса.***<br><br>- Для `linear` и `inverse` контрактов работает только когда<br>&nbsp;&nbsp;`tpslMode`=`Partial` и `slOrderType`=`Limit`.<br>- Для `spot`(UTA) обязательно указывать, если в ордере<br>&nbsp;&nbsp;есть `stopLoss` и `slOrderType` установленные в `Limit`.                       |-   |
+|tpOrderType  	                  |нет	 |string   	  |***Тип ордера при срабатывании тейк-профита.***<br><br>- Для `linear` и `inverse` контрактов<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Market` - по умолчанию<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Limit` - при `tpslMode`=`Full` поддерживается<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;только `tpOrderType`=`Market`.<br>- Для единого аккаунта `spot`<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Market` - при установке только `takeProfit`<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Limit` - при установке и `takeProfit`, и `tpLimitPrice`.          |-   |
+|slOrderType  	                  |нет	 |string   	  |***Тип ордера при срабатывании стоп-лосса.***<br><br>- Для `linear` и `inverse` контрактов<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Market` - по умолчанию<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Limit` - при `tpslMode`=`Full` поддерживается<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;только `slOrderType`=`Market`.<br>- Для единого аккаунта `spot`<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Market` - при установке только `stopLoss`<br>&nbsp;&nbsp;&nbsp;&nbsp;- `Limit` - при установке и `stopLoss`, и `slLimitPrice`.                       |-   |
+
+<a id="пример-ответа"></a>
+
+## Пример ответа
+
+```json
+{
+    "retCode": 0,
+    "retMsg": "OK",
+    "result": {
+        "orderId": "24920bdb-4019-4e37-ad1c-876e3a855ac3",
+        "orderLinkId": "test129",
+        "preImrE4": 30,
+        "preMmrE4": 21,
+        "postImrE4": 357,
+        "postMmrE4": 294
+    },
+    "retExtInfo": {},
+    "time": 1749541599589
+}
+```
+
+<a id="параметры-ответа"></a>
+
+## Параметры ответа
+
+|Параметр  |Тип       |Комментарии                                             |
+|----------|----------|--------------------------------------------------------|
+|orderId      |string    |Идентификатор заказа                                    |
+|orderLinkId  |string    |Пользовательский идентификатор заказа                   |
+|preImrE4   |integer      |Начальная маржа до проверки, с четырьмя знаками после запятой. Например, 30 означает, что IMR = 30/1e4 = 0,30%                                             |
+|preMmrE4   |integer      |Поддерживающая маржа до проверки, с четырьмя знаками после запятой. Например, 30 означает, что MMR = 30/1e4 = 0,30%                                             |
+|postImrE4   |integer      |Начальная маржа, рассчитанная после проверки, с четырьмя знаками после запятой. Например, 30 означает, что IMR = 30/1e4 = 0,30%                                             |
+|postMmrE4   |integer      |Поддерживающая маржа, рассчитанная после проверки, с четырьмя знаками после запятой. Например, 30 означает, что MMR = 30/1e4 = 0,30%                                             |
