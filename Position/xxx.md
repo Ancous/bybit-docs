@@ -361,11 +361,17 @@ Perps & Futures: if you pass qty="0" and specify reduceOnly=true&closeOnTrigger=
 
 -----------------------------------------------------------------------------------------------------------
 
+## Получить информацию о позиции
 
+Product type
+UTA2.0, UTA1.0: linear, inverse, option
+Classic account: linear, inverse
 
 -----------------------------------------------------------------------------------------------------------
 
-
+Symbol name, like BTCUSDT, uppercase only
+If symbol passed, it returns data regardless of having position or not.
+If symbol=null and settleCoin specified, it returns position size greater than zero.
 
 -----------------------------------------------------------------------------------------------------------
 
