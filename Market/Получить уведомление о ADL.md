@@ -155,7 +155,7 @@
       Host: api-testnet.bybit.com
       ```
 
-- Python
+- requests
   
        ```python
        import requests

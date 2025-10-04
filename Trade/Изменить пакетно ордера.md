@@ -77,7 +77,7 @@
   }
   ```
 
-- Python
+- requests
 
   ```python
   import time
