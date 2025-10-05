@@ -173,7 +173,7 @@
 |[category](<../19.Определения значений в запросах и ответах.md#category>)   |string      |Тип продукта               |
 |list   |array      |Массив объектов                                             |
 |symbol   |string      |Название символа                                             |
-|orderId   |string      |Идентификатор заказа                                             |
+|orderId   |string      |Идентификатор ордера                                             |
 |side   |string      |Сторона сделки<br>- `Buy`<br>- `Sell`                                             |
 |qty   |string      |Количество ордера                                             |
 |orderPrice   |string      |Цена сделки                                             |
