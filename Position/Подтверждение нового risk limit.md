@@ -83,7 +83,7 @@
       "symbol": "BTCUSDT",
   }
 
-  param_str = time_stamp + api_key + recv_window + json.dumps(data, separators=(',', ':'))
+  param_str = time_stamp + api_key + recv_window + json.dumps(data)
   
   signature = hmac.new(
       key=secret_key.encode("utf-8"),
