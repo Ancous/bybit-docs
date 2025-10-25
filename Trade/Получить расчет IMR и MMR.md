@@ -190,7 +190,7 @@
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
-  secret_key = "<api_secret от биржи bybit>"
+  api_secret = "<api_secret от биржи bybit>"
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
 

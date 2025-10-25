@@ -54,7 +54,7 @@
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
-  secret_key = "<api_secret от биржи bybit>"
+  api_secret = "<api_secret от биржи bybit>"
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
 
@@ -100,9 +100,9 @@
 |[category](<../19.Определения значений в запросах и ответах.md#category>)	|да           |string    |***Тип продукта.***<br><br>`option`  |`option`   |
 |[symbol](<../19.Определения значений в запросах и ответах.md#symbol>)	    |нет            |string    |<br>***Имя символа.***<br><br>Только заглавными буквами |-   |
 |startTime                     |нет  |integer     |***Временная метка начала выборки (в миллисекундах)***<br><br>- Если `startTime` и `endTime` не передаются, по умолчанию<br>&nbsp;&nbsp;&nbsp;возвращается 7 дней.<br>- Если передан только `startTime`, возвращается диапазон между<br>&nbsp;&nbsp;&nbsp;`startTime` и `startTime` + 7 дней<br>- Если передан только `endTime`, возвращается диапазон между<br>&nbsp;&nbsp;&nbsp;`endTime` - 7 дней и `endTime`<br>- Если переданы оба, правило: `endTime` - `startTime` <= 7 дней       |-   |
-|endTime                     |нет  |integer     |Временная метка конца выборки (в миллисекундах)       |-   |
-|limit                     |нет  |integer     |Ограничение размера данных на странице. [`1`, `100`]       |`50`   |
-|cursor                     |нет  |string     |Курсор. Используйте значение `nextPageCursor` из ответа для получения следующей страницы набора результатов       |-   |
+|endTime                     |нет  |integer     |***Временная метка конца выборки (в миллисекундах)***       |-   |
+|limit                     |нет  |integer     |***Ограничение размера данных на странице.***<br><br>[`1`, `100`]       |`50`   |
+|cursor                     |нет  |string     |***Курсор.***<br><br>Используйте значение `nextPageCursor` из ответа для получения следующей страницы набора результатов       |-   |
 
 <a id="пример-ответа"></a>
 
