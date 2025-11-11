@@ -7,13 +7,13 @@
 
 <a id="информация"></a>
 
-Вы можете решить, должны ли активы на Едином счёте быть залоговыми монетами.
+Запрос на получения состояния MMP
 
 <a id="конечная-точка"></a>
 
 ## Конечная точка
 
-`/v5/account/set-collateral-switch`
+`/v5/account/mmp-state`
 
 <a id="примеры-запроса"></a>
 
@@ -22,18 +22,16 @@
 - HTTP
 
   ```http
-  POST /v5/account/set-collateral-switch HTTP/1.1
-  Host: api-testnet.bybit.com
+  POST /v5/account/mmp-reset HTTP/1.1
+  Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
-  X-BAPI-TIMESTAMP: 1690513916181
+  X-BAPI-TIMESTAMP: 1675842997277
   X-BAPI-RECV-WINDOW: 5000
   Content-Type: application/json
-  Content-Length: 55
-
+  
   {
-      "coin": "BTC",
-      "collateralSwitch": "ON"
+      "baseCoin": "ETH"
   }
   ```
 
@@ -47,7 +45,7 @@
   import requests
 
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/account/set-collateral-switch"
+  end_point = "/v5/account/mmp-state"
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
@@ -56,8 +54,7 @@
   recv_window = "5000"
 
   data = {
-      "coin": "BTC",
-      "collateralSwitch": "ON"
+      "baseCoin": "ETH"
   }
 
   param_str = time_stamp + api_key + recv_window + json.dumps(data)
@@ -90,9 +87,8 @@
       api_key="<api_key от биржи bybit>",
       api_secret="<api_secret от биржи bybit>",
   )
-  print(session.set_collateral_coin(
-      coin="BTC",
-      collateralSwitch="ON"
+  print(session.get_mmp_state(
+      baseCoin="ETH",
   ))
   ```
 
@@ -102,8 +98,7 @@
 
 |Параметр  	                  |Обязательный	 |Тип  	  |Комментарии       |По умолчанию|
 |-----------------------------|--------------|--------|------------------|------------|
-|coin                     |да  |string     |***Базовая монета.***<br><br>Только заглавными буквами<br><br>- Вы можете получить залоговую монету [Получить информацию об обеспечении](<Получить информацию об обеспечении.md>)<br>- USDT, USDC установить нельзя       |-   |
-|collateralSwitch         |да  |string     |- `ON` - включить залог<br>- `OFF` - выключить залог       |-   |
+|baseCoin	                  |да            |string  |***Базовая монета***<br><br>Только заглавными буквами	|-  |
 
 <a id="пример-ответа"></a>
 
@@ -112,10 +107,23 @@
 ```json
 {
     "retCode": 0,
-    "retMsg": "SUCCESS",
-    "result": {},
+    "retMsg": "OK",
+    "result": {
+        "result": [
+            {
+                "baseCoin": "BTC",
+                "mmpEnabled": true,
+                "window": "5000",
+                "frozenPeriod": "100000",
+                "qtyLimit": "0.01",
+                "deltaLimit": "0.01",
+                "mmpFrozenUntil": "1675760625519",
+                "mmpFrozen": false
+            }
+        ]
+    },
     "retExtInfo": {},
-    "time": 1690515818656
+    "time": 1675843188984
 }
 ```
 
@@ -123,4 +131,14 @@
 
 ## Параметры ответа
 
-Отсутствуют
+|Параметр  |Тип       |Комментарии                                             |
+|----------|----------|--------------------------------------------------------|
+|result   |array      |Массив объектов                                             |
+|baseCoin   |string      |Базовая монета                                             |
+|mmpEnabled   |boolean      |Включена ли учетная запись mmp                                             |
+|window   |string      |Временное окно (миллисекунды)                                             |
+|frozenPeriod   |string      |Период заморозки (миллисекунды)                                             |
+|qtyLimit   |string      |Лимит количества                                             |
+|deltaLimit   |string      |Лимит дельты                                             |
+|mmpFrozenUntil   |string      |Временная метка разморозки (миллисекунды)                                            |
+|mmpFrozen   |boolean      |Срабатывает ли mmp.<br>`true`: значение `mmpFrozenUntil` имеет смысл.<br>`false`: значение `mmpFrozenUntil` следует игнорировать.                                             |

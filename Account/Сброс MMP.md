@@ -7,13 +7,18 @@
 
 <a id="информация"></a>
 
-Вы можете решить, должны ли активы на Едином счёте быть залоговыми монетами.
+Запрос на сброс MMP
 
-<a id="конечная-точка"></a>
+>Информация:
+>
+>- После срабатывания MMP вы можете разморозить счёт с помощью этой конечной точки, после чего значения qtyLimit и
+> deltaLimit будут сброшены до 0.
+>- Если счёт не заморожен, сброс также может удалить предыдущие накопления, т. е. значения qtyLimit и deltaLimit будут
+> сброшены до 0.
 
 ## Конечная точка
 
-`/v5/account/set-collateral-switch`
+`/v5/account/mmp-reset`
 
 <a id="примеры-запроса"></a>
 
@@ -22,18 +27,16 @@
 - HTTP
 
   ```http
-  POST /v5/account/set-collateral-switch HTTP/1.1
-  Host: api-testnet.bybit.com
+  POST /v5/account/mmp-reset HTTP/1.1
+  Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
-  X-BAPI-TIMESTAMP: 1690513916181
+  X-BAPI-TIMESTAMP: 1675842997277
   X-BAPI-RECV-WINDOW: 5000
   Content-Type: application/json
-  Content-Length: 55
-
+  
   {
-      "coin": "BTC",
-      "collateralSwitch": "ON"
+      "baseCoin": "ETH"
   }
   ```
 
@@ -47,7 +50,7 @@
   import requests
 
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/account/set-collateral-switch"
+  end_point = "/v5/account/mmp-reset"
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
@@ -56,8 +59,7 @@
   recv_window = "5000"
 
   data = {
-      "coin": "BTC",
-      "collateralSwitch": "ON"
+      "baseCoin": "ETH"
   }
 
   param_str = time_stamp + api_key + recv_window + json.dumps(data)
@@ -90,9 +92,8 @@
       api_key="<api_key от биржи bybit>",
       api_secret="<api_secret от биржи bybit>",
   )
-  print(session.set_collateral_coin(
-      coin="BTC",
-      collateralSwitch="ON"
+  print(session.reset_mmp(
+      baseCoin="ETH",
   ))
   ```
 
@@ -102,8 +103,7 @@
 
 |Параметр  	                  |Обязательный	 |Тип  	  |Комментарии       |По умолчанию|
 |-----------------------------|--------------|--------|------------------|------------|
-|coin                     |да  |string     |***Базовая монета.***<br><br>Только заглавными буквами<br><br>- Вы можете получить залоговую монету [Получить информацию об обеспечении](<Получить информацию об обеспечении.md>)<br>- USDT, USDC установить нельзя       |-   |
-|collateralSwitch         |да  |string     |- `ON` - включить залог<br>- `OFF` - выключить залог       |-   |
+|baseCoin	                  |да            |string  |***Базовая монета***<br><br>Только заглавными буквами	|-  |
 
 <a id="пример-ответа"></a>
 
@@ -112,10 +112,7 @@
 ```json
 {
     "retCode": 0,
-    "retMsg": "SUCCESS",
-    "result": {},
-    "retExtInfo": {},
-    "time": 1690515818656
+    "retMsg": "success"
 }
 ```
 
