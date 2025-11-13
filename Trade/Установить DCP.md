@@ -79,7 +79,7 @@
   }
   ```
 
-- requests
+- собственная реализация
 
   ```python
   import time

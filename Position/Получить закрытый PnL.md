@@ -53,7 +53,7 @@
   X-BAPI-RECV-WINDOW: 5000
   ```
 
-- requests
+- собственная реализация
 
   ```python
   import time

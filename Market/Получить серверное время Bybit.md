@@ -26,7 +26,7 @@
   Host: api.bybit.com
   ```
 
-- requests
+- собственная реализация
 
   ```python
   import requests

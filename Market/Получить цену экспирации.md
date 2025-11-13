@@ -45,7 +45,7 @@
   Host: api-testnet.bybit.com
   ```
 
-- requests
+- собственная реализация
 
   ```python
   import requests

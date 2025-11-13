@@ -39,14 +39,15 @@
   
   ```
 
-- requests
+- собственная реализация
 
   ```python
   import time
   import hmac
   import hashlib
-  import json
   import requests
+
+  from urllib.parse import urlencode
 
   base_url = "https://api-testnet.bybit.com"
   end_point = "xxxxx"
@@ -58,13 +59,11 @@
   recv_window = "5000"
 
   data = {
-      "category": "spot",
-      "symbol": "BTCUSDT",
-      "side": "Buy",
-      "orderType": "Limit",
+      "accountType": "UNIFIED",
+      "coin": "BTC",
   }
 
-  param_str = time_stamp + api_key + recv_window + json.dumps(data)
+  param_str = time_stamp + api_key + recv_window + urlencode(data)
   
   signature = hmac.new(
       key=secret_key.encode("utf-8"),
@@ -79,7 +78,7 @@
     "X-BAPI-RECV-WINDOW": recv_window,
   }
 
-  response = requests.post(url=complete_request, headers=headers, json=data, timeout=10)
+  response = requests.get(url=complete_request, headers=headers, json=data, timeout=10)
 
   print(response.json())
   ```
@@ -117,5 +116,3 @@
 |Параметр   |Тип      |Комментарии                                             |
 |Параметр   |Тип      |Комментарии                                             |
 |Параметр   |Тип      |Комментарии                                             |
-
-x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x x<br>
