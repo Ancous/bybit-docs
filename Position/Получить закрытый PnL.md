@@ -185,7 +185,7 @@
 |cumExitValue   |string      |Накопленная стоимость позиции выхода                                             |
 |avgExitPrice   |string      |Средняя цена выхода                                             |
 |closedPnl   |string      |Закрытый PnL                                             |
-|fillCount   |string      |Количество заполнений в одном заказе                                             |
+|fillCount   |string      |Количество исполнений в одном ордера                                             |
 |leverage   |string      |Кредитное плечо                                             |
 |openFee   |string      |Комиссия за открытые позиции                                             |
 |closeFee   |string      |Комиссия за закрытие позиции                                             |
