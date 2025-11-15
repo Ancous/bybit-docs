@@ -84,7 +84,7 @@
       api_secret="<api_secret от биржи bybit>",
   )
   print(session.get_coin_greeks(
-      baseCoin="BTC",
+      baseCoin="BTC", 
   ))
   ```
 

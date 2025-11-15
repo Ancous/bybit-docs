@@ -8,26 +8,14 @@
 
 <a id="информация"></a>
 
-Подписка на ленту данных о быстром исполнении ордеров, чтобы наблюдать за исполнением ваших ордеров в режиме
-реального времени.
-
-Быстрое исполнение значительно сокращает задержку данных по сравнению с обычном исполнении.
-Однако оно поддерживает ограниченный тип исполнения сделок и меньшее количество полей данных.
-
->Информация:
->
->- Поддерживает все виды исполнений `perpetual`, `futures` и `Spot`, но пока не поддерживает `option`.
->- Вы можете получать только обновление `execType`=`Trade`.
+Подписка на ленту новостей о greek монетах, чтобы видеть изменения в данных о greek монетах в режиме реального времени.
+Только `option`.
 
 <a id="поток-данных"></a>
 
 ## Поток данных
 
-`execution.fast`
-`execution.fast.spot`
-`execution.fast.linear`
-`execution.fast.inverse`
-`execution.fast.option`
+`greeks`
 
 <a id="подписка"></a>
 
@@ -37,7 +25,7 @@
 {
     "op": "subscribe",
     "args": [
-        "execution.fast"
+        "greeks"
     ]
 }
 ```
@@ -71,7 +59,7 @@
           subscribe_request = {
               "op": "subscribe",
               "args": [
-                  "execution.fast"
+                  "greeks"
               ]
           }
           ws.send(json.dumps(subscribe_request))
@@ -123,6 +111,31 @@
   run_websocket()
   ```
 
+- pybit
+
+  ```python
+  from time import sleep
+
+  from pybit.unified_trading import WebSocket
+
+  ws = WebSocket(
+      testnet=True,
+      channel_type="private",
+      api_key="<api_key от биржи bybit>",
+      api_secret="<api_secret от биржи bybit>",
+  )
+
+  def handle_message(message):
+      print(message)
+
+  ws.greek_stream(
+    callback=handle_message
+  )
+
+  while True:
+      sleep(1)
+  ```
+
 <a id="пример-ответа-при-удачной-подписки"></a>
 
 ## Пример ответа при удачной подписки
@@ -132,7 +145,7 @@
     "success": true,
     "ret_msg": "",
     "op": "subscribe",
-    "conn_id": "d266oeddaugoadim24og-761j0"
+    "conn_id": "d266oeddaugoadim24og-76t74"
 }
 ```
 
@@ -142,21 +155,16 @@
 
 ```json
 {
-    "topic": "execution.fast",
-    "creationTime": 1716800399338,
+    "id": "592324fa945a30-2603-49a5-b865-21668c29f2a6",
+    "topic": "greeks",
+    "creationTime": 1672364262482,
     "data": [
         {
-            "category": "linear",
-            "symbol": "ICPUSDT",
-            "execId": "3510f361-0add-5c7b-a2e7-9679810944fc",
-            "execPrice": "12.015",
-            "execQty": "3000",
-            "orderId": "443d63fa-b4c3-4297-b7b1-23bca88b04dc",
-            "isMaker": false,
-            "orderLinkId": "test-00001",
-            "side": "Sell",
-            "execTime": "1716800399334",
-            "seq": 34771365464
+            "baseCoin": "ETH",
+            "totalDelta": "0.06999986",
+            "totalGamma": "-0.00000001",
+            "totalVega": "-0.00000024",
+            "totalTheta": "0.00001314"
         }
     ]
 }
@@ -168,17 +176,12 @@
 
 |Параметр  |Тип       |Комментарии                                             |
 |----------|----------|--------------------------------------------------------|
+|id        |string    |Идентификатор сообщения                                             |
 |topic     |string    |Название потока данных                                             |
 |creationTime | number | Временная метка создания данных (в миллисекундах) |
 |data | array | Массив объектов. |
-|[category](<../../19.Определения значений в запросах и ответах.md#category>) | string | Тип продукта<br><br>- [UTA2.0](<../13.Различные режимы аккаунтов.md#единый-торговый-аккаунт-2.0>), [UTA1.0](<../13.Различные режимы аккаунтов.md#единый-торговый-аккаунт-1.0>): `spot`, `linear`, `inverse`<br>- Классический аккаунт: `spot`, `linear`, `inverse`. |
-|symbol | string | Название символа |
-|orderId | string | Идентификатор ордера |
-|isMaker | boolean | Является ли исполненный ордер maker order. `true`: maker, `false`: taker |
-|orderLinkId | string | Пользовательский идентификатор ордера<br><br>- Maker order всегда имеет значение `""`<br>- Если maker order в книге ордеров преобразуется в taker order, `orderLinkId` также имеет значение `""` |
-|execId | string | Идентификатор исполнения |
-|execPrice | string | Цена исполнения |
-|execQty | string | Количество исполнения |
-|side | string | Сторона. `Buy`,`Sell` |
-|execTime | string | Временная метка исполнения (в миллисекундах) |
-|seq  |long      |Перекрёстная последовательность, используемая для связывания каждого исполнения и каждого обновления позиции<br><br>- Последовательность будет одинаковой при одновременном<br>&nbsp;&nbsp;&nbsp;заключении нескольких сделок.<br>- Разные символы могут иметь одинаковую последовательность.<br>&nbsp;&nbsp;&nbsp;Используйте seq + symbol для проверки уникальности. |
+|baseCoin   |string      |Базовая монета                                             |
+|totalDelta   |string      |Значение Delta                                             |
+|totalGamma   |string      |Значение Gamma                                             |
+|totalVega   |string      |Значение Vega                                             |
+|totalTheta   |string      |Значение Theta                                             |
