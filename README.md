@@ -1,4 +1,4 @@
-# Документация Bybit API на русском языке (ПОСЛЕДНЕЕ ИЗМЕНЕНИЕ ОТ 2025-11-04)
+# Документация Bybit API на русском языке (ПОСЛЕДНИИ КОРРЕКТИРОВКИ 2025-11-27)
 
 [Содержание документации](<10.Содержание.md>)
 
@@ -300,7 +300,6 @@
 
 - `GET /v5/crypto-loan/vault/asset-info` — информация по доступным активам для Vault.
 - `POST /v5/crypto-loan/vault/deposit` — внесение средств в Vault для lending.
-- `POST /v5/crypto-loan/borrow` — запрос займа крипты.
 - `GET /v5/crypto-loan/loan-history` — история ваших займов.
 - `POST /v5/crypto-loan/repay` — погашение займа.
 
