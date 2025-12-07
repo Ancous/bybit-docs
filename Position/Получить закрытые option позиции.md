@@ -97,8 +97,8 @@
 
 |Параметр  	                  |Обязательный	 |Тип  	  |Комментарии &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;               |По умолчанию|
 |-----------------------------|------------|----------|---------------------------|------------|
-|[category](<../19.Определения значений в запросах и ответах.md#category>)	|да           |string    |***Тип продукта.***<br><br>`option`  |`option`   |
-|[symbol](<../19.Определения значений в запросах и ответах.md#symbol>)	    |нет            |string    |<br>***Имя символа.***<br><br>Только заглавными буквами |-   |
+|[category](</19.Определения значений в запросах и ответах.md#category>)	|да           |string    |***Тип продукта.***<br><br>`option`  |`option`   |
+|[symbol](</19.Определения значений в запросах и ответах.md#symbol>)	    |нет            |string    |<br>***Имя символа.***<br><br>Только заглавными буквами |-   |
 |startTime                     |нет  |integer     |***Временная метка начала выборки (в миллисекундах)***<br><br>- **Если `startTime` и `endTime` не передаются**:<br>&nbsp;&nbsp;&nbsp;по умолчанию возвращается 7 дней.<br>- **Если передан только `startTime`**:<br>&nbsp;&nbsp;&nbsp;возвращается диапазон между `startTime` + 7 дней<br>- **Если передан только `endTime`**:<br>&nbsp;&nbsp;&nbsp;возвращается диапазон между `endTime` - 7 дней.<br>- **Если переданы оба**:<br>&nbsp;&nbsp;&nbsp;правило: `endTime` - `startTime` <= 7 дней       |-   |
 |endTime                     |нет  |integer     |***Временная метка конца выборки (в миллисекундах)***       |-   |
 |limit                     |нет  |integer     |***Ограничение размера данных на странице.***<br><br>[`1`, `100`]       |`50`   |
@@ -157,7 +157,7 @@
 
 |Параметр  |Тип       |Комментарии                                             |
 |----------|----------|--------------------------------------------------------|
-|[category](<../19.Определения значений в запросах и ответах.md#category>)   |string      |Тип продукта               |
+|[category](</19.Определения значений в запросах и ответах.md#category>)   |string      |Тип продукта               |
 |list   |array      |Массив объектов                                             |
 |symbol   |string      |Название символа                                             |
 |side   |string      |Сторона сделки<br>- `Buy`<br>- `Sell`                                             |
