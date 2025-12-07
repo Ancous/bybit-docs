@@ -46,23 +46,23 @@
   import hmac
   import hashlib
   import requests
-
+  
   from urllib.parse import urlencode
-
+  
   base_url = "https://api-testnet.bybit.com"
   end_point = "xxxxx"
   complete_request = base_url + end_point
-
+  
   api_key = "<api_key от биржи bybit>"
-  api_secret = "<api_secret от биржи bybit>"
+  secret_key = "<secret_key от биржи bybit>"
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
-
+  
   data = {
       "accountType": "UNIFIED",
       "coin": "BTC",
   }
-
+  
   param_str = time_stamp + api_key + recv_window + urlencode(data)
   
   signature = hmac.new(
@@ -77,8 +77,8 @@
     "X-BAPI-TIMESTAMP": time_stamp,
     "X-BAPI-RECV-WINDOW": recv_window,
   }
-
-  response = requests.get(url=complete_request, headers=headers, json=data, timeout=10)
+  
+  response = requests.get(url=complete_request, headers=headers, params=data, timeout=10)
 
   print(response.json())
   ```

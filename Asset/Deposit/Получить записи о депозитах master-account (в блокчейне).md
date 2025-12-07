@@ -52,7 +52,7 @@
   complete_request = base_url + end_point
 
   api_key = "<api_key от биржи bybit>"
-  api_secret = "<api_secret от биржи bybit>"
+  secret_key = "<secret_key от биржи bybit>"
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
 
@@ -75,7 +75,7 @@
     "X-BAPI-RECV-WINDOW": recv_window,
   }
 
-  response = requests.get(url=complete_request, headers=headers, json=data, timeout=10)
+  response = requests.get(url=complete_request, headers=headers, params=data, timeout=10)
 
   print(response.json())
   ```
@@ -88,7 +88,7 @@
   session = HTTP(
       testnet=True,
       api_key="<api_key от биржи bybit>",
-      api_secret="<api_secret от биржи bybit>",
+      api_secret="<secret_key от биржи bybit>",
   )
   print(session.get_deposit_records(
       coin="USDT",
