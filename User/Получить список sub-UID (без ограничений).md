@@ -7,8 +7,12 @@
 
 <a id="информация"></a>
 
-Запрос списка своих кастодиальных sub-UID для институционального клиента.
+Запрос на получение списка sub-UID более 10 000
 
+>Информация:
+>
+>Возвращает более 10 000 sub-UID мастер-аккаунта. Используется только API-ключ master-пользователя.
+<!-- -->
 >Важное замечание:
 >
 >API-ключ master-UID должен обладать одним из следующих разрешений для вызова этой конечной точки:
@@ -21,7 +25,7 @@
 
 ## Конечная точка
 
-`/v5/user/escrow_sub_members`
+`/v5/user/submembers`
 
 <a id="примеры-запроса"></a>
 
@@ -30,14 +34,12 @@
 - HTTP
 
   ```http
-  GET /v5/user/escrow_sub_members?pageSize=2 HTTP/1.1
-
-  Host: api-testnet.bybit.com
+  GET /v5/user/submembers?pageSize=1 HTTP/1.1
+  Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
-  X-BAPI-TIMESTAMP: 1739763787703
+  X-BAPI-TIMESTAMP: 1676430318405
   X-BAPI-RECV-WINDOW: 5000
-  Content-Type: application/json
   ```
 
 - собственная реализация
@@ -51,7 +53,7 @@
   from urllib.parse import urlencode
   
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/user/escrow_sub_members"
+  end_point = "/v5/user/submembers"
   complete_request = base_url + end_point
   
   api_key = "<api_key от биржи bybit>"
@@ -60,7 +62,7 @@
   recv_window = "5000"
   
   data = {
-    "pageSize": 2
+    "pageSize": 1
   }
   
   param_str = time_stamp + api_key + recv_window + urlencode(data)
@@ -88,8 +90,8 @@
 ## Параметры запроса
 
 |Параметр  	                  |Обязательный	 |Тип  	  |Комментарии       |По умолчанию|
-|-----------------------------|--------------|--------|------------------|------------|
-|pageSize |нет |string |***Количество записей на странице.***<br><br>- Можно запросить до 100 записей за один раз. |-   |
+|---------------------------|---------------|----------|-----------------|------------|
+|pageSize |нет |string |***Количество записей на странице.***<br><br>- Можно запросить до 100 записей за раз. |-   |
 |nextCursor |нет |string |***Курсор.***<br><br>- Используйте значение `nextCursor` из ответа для получения следующей страницы набора результатов |-   |
 
 <a id="пример-ответа"></a>
@@ -103,26 +105,26 @@
     "result": {
         "subMembers": [
             {
-                "uid": "104274894",
-                "username": "Private_Wealth_Management",
-                "memberType": 12,
+                "uid": "106314365",
+                "username": "xxxx02",
+                "memberType": 1,
                 "status": 1,
-                "remark": "earn fund",
-                "accountMode": 3
+                "remark": "",
+                "accountMode": 5
             },
             {
-                "uid": "104274884",
-                "username": "Private_Wealth_Management",
-                "memberType": 12,
+                "uid": "106279879",
+                "username": "xxxx01",
+                "memberType": 1,
                 "status": 1,
-                "remark": "earn fund",
-                "accountMode": 3
+                "remark": "",
+                "accountMode": 6
             }
         ],
-        "nextCursor": "344"
+        "nextCursor": "0"
     },
     "retExtInfo": {},
-    "time": 1739763788699
+    "time": 1760388041006
 }
 ```
 
@@ -133,10 +135,10 @@
 |Параметр  |Тип       |Комментарии                                             |
 |----------|----------|--------------------------------------------------------|
 |subMembers |array |***Массив объектов.*** |
-|uid |string |***UID sub-UID.*** |
-|username |string |***Имя пользователя sub-UID.*** |
-|memberType |integer |***Тип аккаунта.***<br><br>- `12`: Кастодиальный sub-UID |
-|status |integer |***Статус аккаунта.***<br><br>- `1`: Активен<br>- `2`: Вход запрещен<br>- `4`: Заморожен  |
-|accountMode |integer |***Режим аккаунта.***<br><br>- `1`: Классический аккаунт<br>- `3`: UTA-аккаунт  |
+|uid |string |***Идентификатор sub-UID.*** |
+|username |string |***Имя пользователя.*** |
+|memberType |integer |***Тип аккаунта.***<br><br>- `1`: стандартный sub-аккаунт<br>- `6`: кастодиальный sub-аккаунт   |
+|status |integer |***Статус учётной записи.***<br><br>- `1`: активен<br>- `2`: вход запрещён<br>- `4`: заморожен |
+|accountMode |integer |***Режим аккаунта.***<br><br>- `1`: Классический аккаунт<br>- `3`: UTA1.0<br>- `4`: UTA1.0 Pro<br>- `5`: UTA2.0<br>- `6`: UTA2.0 Pro |
 |remark |string |***Примечание.*** |
-|nextCursor |string |***Курсор.***<br><br>- Используйте значение `nextCursor` из ответа для получения следующей страницы набора результатов |
+|nextCursor |string |***Курсор.***<br><br>- Используйте значение `nextCursor` из ответа для получения следующей страницы набора результатов   |

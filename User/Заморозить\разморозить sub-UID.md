@@ -7,14 +7,25 @@
 
 <a id="информация"></a>
 
-Запрос sub-UID, принадлежащие master-UID. Возвращает до 2000 sub-UID. Если вам нужно больше, пожалуйста,
-обратитесь к этой [конечной точке USER](#).
+Запрос на замораживание или размораживание sub-UID
+
+>Информация:
+>
+>Используется только API-ключ master-пользователя.
+<!-- -->
+>Важное замечание:
+>
+>API-ключ master-UID должен обладать одним из следующих разрешений для вызова этой конечной точки:
+>
+>- "Account Transfer"
+>- "Subaccount Transfer"
+>- "Withdrawal"
 
 <a id="конечная-точка"></a>
 
 ## Конечная точка
 
-`/v5/asset/transfer/query-sub-member-list`
+`/v5/user/frozen-sub-member`
 
 <a id="примеры-запроса"></a>
 
@@ -23,12 +34,18 @@
 - HTTP
 
   ```http
-  GET /v5/asset/transfer/query-sub-member-list HTTP/1.1
-  Host: api-testnet.bybit.com
+  POST /v5/user/frozen-sub-member HTTP/1.1
+  Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
-  X-BAPI-TIMESTAMP: 1672147239931
+  X-BAPI-TIMESTAMP: 1676430842094
   X-BAPI-RECV-WINDOW: 5000
+  Content-Type: application/json
+  
+  {
+      "subuid": 53888001,
+      "frozen": 1
+  }
   ```
 
 - собственная реализация
@@ -37,25 +54,24 @@
   import time
   import hmac
   import hashlib
+  import json
   import requests
-
-  from urllib.parse import urlencode
-
+  
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/asset/transfer/query-sub-member-list"
+  end_point = "/v5/user/frozen-sub-member"
   complete_request = base_url + end_point
-
+  
   api_key = "<api_key от биржи bybit>"
   secret_key = "<secret_key от биржи bybit>"
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
-
+  
   data = {
-      "accountType": "UNIFIED",
-      "coin": "BTC",
+      "subuid": 53888001,
+      "frozen": 1,
   }
-
-  param_str = time_stamp + api_key + recv_window + urlencode(data)
+  
+  param_str = time_stamp + api_key + recv_window + json.dumps(data)
   
   signature = hmac.new(
       key=secret_key.encode("utf-8"),
@@ -69,9 +85,9 @@
     "X-BAPI-TIMESTAMP": time_stamp,
     "X-BAPI-RECV-WINDOW": recv_window,
   }
-
-  response = requests.get(url=complete_request, headers=headers, params=data, timeout=10)
-
+  
+  response = requests.post(url=complete_request, headers=headers, json=data, timeout=10)
+  
   print(response.json())
   ```
 
@@ -85,14 +101,20 @@
       api_key="<api_key от биржи bybit>",
       api_secret="<secret_key от биржи bybit>",
   )
-  print(session.get_sub_uid())
+  print(session.freeze_sub_uid(
+      subuid=53888001,
+      frozen=1,
+  ))
   ```
 
 <a id="параметры-запроса"></a>
 
 ## Параметры запроса
 
-Отсутствуют
+|Параметр  	                  |Обязательный	 |Тип  	  |Комментарии       |По умолчанию|
+|-----------------------------|--------------|--------|------------------|------------|
+|subuid |Да |integer |***Идентификатор sub-UID.*** |-   |
+|frozen |Да |integer |***Действие.***<br><br>-  `0`: разморозить<br>- `1`: заморозить  |-   |
 
 <a id="пример-ответа"></a>
 
@@ -101,23 +123,10 @@
 ```json
 {
     "retCode": 0,
-    "retMsg": "success",
-    "result": {
-        "subMemberIds": [
-            "554117",
-            "592324",
-            "592334",
-            "1055262",
-            "1072055",
-            "1119352"
-        ],
-        "transferableSubMemberIds": [
-            "554117",
-            "592324"
-        ]
-    },
+    "retMsg": "",
+    "result": {},
     "retExtInfo": {},
-    "time": 1672147241320
+    "time": 1676430697553
 }
 ```
 
@@ -125,7 +134,4 @@
 
 ## Параметры ответа
 
-|Параметр  |Тип       |Комментарии                                             |
-|----------|----------|--------------------------------------------------------|
-|subMemberIds   |array      |Все sub-UID master-UID                                             |
-|transferableSubMemberIds   |array      |Все sub-UID, для которых разрешен универсальный перевод       |
+Отсутствуют
