@@ -19,9 +19,9 @@
 >
 > API-ключ master-UID должен обладать одним из следующих разрешений для вызова этой конечной точки:
 >
->- “Account Transfer”
->- “Subaccount Transfer”
->- “Withdrawal”
+> - “Account Transfer”
+> - “Subaccount Transfer”
+> - “Withdrawal”
 
 <a id="конечная-точка"></a>
 
