@@ -24,7 +24,7 @@
 - HTTP
 
   ```http
-  POST /v5/account/mmp-reset HTTP/1.1
+  POST /v5/account/mmp-state HTTP/1.1
   Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
