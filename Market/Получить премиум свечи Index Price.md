@@ -7,6 +7,8 @@
 
 <a id="информация"></a>
 
+## Информация
+
 Запрос исторических свечей
 [premium Index Price](https://www.bybit.com/data/basic/linear/index-price/premium-index?symbol=BTCUSDT). Графики
 возвращаются группами на основе заданного интервала.

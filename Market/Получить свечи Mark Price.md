@@ -7,6 +7,8 @@
 
 <a id="информация"></a>
 
+## Информация
+
 Запрос исторических свечей [Mark Price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms).
 Графики возвращаются группами в зависимости от запрошенного интервала.
 

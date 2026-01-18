@@ -44,16 +44,16 @@
 
 Тело запроса имеет формат JSON и содержит следующие поля
 
-|Параметр       |Тип       |Комментарии                                             |
-|---------------|----------|--------------------------------------------------------|
-|tradeNo     	|string	   |Номер торгового ордера                                      |
-|status         |string	   |Статус: `processing`, `success` или `failed`                      |
-|quoteTxId	    |string	   |ID котировочной транзакции.<br>Сгенерировано системой, используется для подтверждения предложения.|
-|exchangeRate	|string	   |Обменный курс                                                          |
-|fromCoin	    |string	   |Исходная монета (продаваемая)                                     |
-|fromCoinType	|string	   |Тип fromCoin: `fiat` или `crypto`                                |
-|toCoin         |string	   |Целевая монета (покупаемая)                                        |
-|toCoinType	    |string	   |Тип toCoin: `fiat` или `crypto`                                        |
-|fromAmount     |string	   |Количество исходной монеты                                         |
-|toAmount	    |string	   |Количество целевой монеты                                   |
-|createdAt	    |string	   |Время создания сделки                                                          |
+| Параметр      | Тип      | Комментарии                                                                                        |
+|---------------|----------|----------------------------------------------------------------------------------------------------|
+| tradeNo       | string   | Номер торгового ордера                                                                             |
+| status        | string   | Статус: `processing`, `success` или `failed`                                                       |
+| quoteTxId     | string   | ID котировочной транзакции.<br>Сгенерировано системой, используется для подтверждения предложения. |
+| exchangeRate  | string   | Обменный курс                                                                                      |
+| fromCoin      | string   | Исходная монета (продаваемая)                                                                      |
+| fromCoinType  | string   | Тип fromCoin: `fiat` или `crypto`                                                                  |
+| toCoin        | string   | Целевая монета (покупаемая)                                                                        |
+| toCoinTyp     | string   | Тип toCoin: `fiat` или `crypto`                                                                    |
+| fromAmount    | string   | Количество исходной монеты                                                                         |
+| toAmount      | string   | Количество целевой монеты                                                                          |
+| createdAt     | string   | Время создания сделки                                                                              |
