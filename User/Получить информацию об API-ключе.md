@@ -182,7 +182,7 @@
 | Derivatives   | array    | ***Разрешение по умолчанию.***<br><br>- `DerivativesTrade`                                                                                              |
 | Exchange      | array    | ***Разрешения для конвертации.***<br><br>- `ExchangeHistory`                                                                                            |
 | Earn          | array    | ***Разрешения для продуктов Earn.***<br><br>- `Earn`                                                                                                    |
-| NFT           | array    | **Устаревшее поле.**<br><br>- Всегда `[]`                                                                                                                       |
+| NFT           | array    | **Устаревшее поле.**<br><br>- Всегда `[]`                                                                                                               |
 | BlockTrade    | array    | ***Разрешения для блочных сделок.***<br><br>- Неприменимо к sub-UID<br>- Всегда `[]`                                                                    |
 | Affiliate     | array    | ***Разрешения для партнёрской программы.***<br><br>- Только у партнёров, иначе `[]`                                                                     |
 | CopyTrading   | array    | Всегда `[]`, так как мастер-трейдеры используют разрешение `ContractTrade` для CopyTrading                                                              |
