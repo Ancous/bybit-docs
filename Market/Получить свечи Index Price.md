@@ -13,14 +13,14 @@
 [Index Price](https://www.bybit.com/en-US/help-center/s/article/Glossary-Bybit-Trading-Terms). Графики возвращаются
 группами на основе заданного интервала.
 
->Зона применения:  
+> Зона применения:  
 >
->`linear` - контракт (расчет в USDT, USDC, ...)
+> `linear` - контракт (расчет в USDT, USDC, ...)
 >
 > - `Perpetual` - контракт без даты экспирации
 > - `Futures` - контракт с датой экспирации
 >
->`inverse` - контракт (расчет в BTC, ETH, ...)
+> `inverse` - контракт (расчет в BTC, ETH, ...)
 >
 > - `Perpetual` - контракт без даты экспирации
 > - `Futures` - контракт с датой экспирации

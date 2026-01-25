@@ -13,9 +13,9 @@
 [premium Index Price](https://www.bybit.com/data/basic/linear/index-price/premium-index?symbol=BTCUSDT). Графики
 возвращаются группами на основе заданного интервала.
 
->Зона применения:  
+> Зона применения:  
 >
->`linear` - контракт (расчет в USDT, USDC, ...)
+> `linear` - контракт (расчет в USDT, USDC, ...)
 >
 > - `Perpetual` - контракт без даты экспирации
 > - `Futures` - контракт с датой экспирации
