@@ -9,25 +9,32 @@
 
 ## Информация
 
-Запрос на замораживание или размораживание sub-UID
+Запрос на удаление API-key sub-UID.  
+Для вызова этой конечной точки используйте либо API-key sub-UID, который требуется удалить, либо API-key master-UID для
+удаления соответствующего ключа sub-аккаунта.
 
-> Информация:
->
-> Используется только API-ключ master-пользователя.
-<!-- -->
 > Важное замечание:
 >
-> API-ключ master-UID должен обладать одним из следующих разрешений для вызова этой конечной точки:
+> API-key должен обладать одним из следующих разрешений для вызова этой конечной точки:
 >
-> - “Account Transfer”
-> - “Subaccount Transfer”
-> - “Withdrawal”
+> - Для API-key sub-UID:
+>   - "Account Transfer"
+>   - "Sub Member Transfer"
+>
+> - Для API-key master-UID:
+>   - "Account Transfer"
+>   - "Sub Member Transfer"
+>   - "Withdrawal"
+<!-- -->
+> ⚠️ ОПАСНОСТЬ!
+>
+> БУДЬТЕ ОСТОРОЖНЫ! API-key sub-UID будет немедленно удален после вызова этой конечной точки.
 
 <a id="конечная-точка"></a>
 
 ## Конечная точка
 
-`/v5/user/frozen-sub-member`
+`/v5/user/delete-sub-api`
 
 <a id="примеры-запроса"></a>
 
@@ -36,18 +43,15 @@
 - HTTP
 
   ```http
-  POST /v5/user/frozen-sub-member HTTP/1.1
+  POST /v5/user/delete-sub-api HTTP/1.1
   Host: api.bybit.com
   X-BAPI-API-KEY: "<api_key от биржи bybit>"
   X-BAPI-SIGN: <подпись>
-  X-BAPI-TIMESTAMP: 1676430842094
+  X-BAPI-TIMESTAMP: 1676431922953
   X-BAPI-RECV-WINDOW: 5000
   Content-Type: application/json
   
-  {
-      "subuid": 53888001,
-      "frozen": 1
-  }
+  {}
   ```
 
 - собственная реализация
@@ -60,7 +64,7 @@
   import requests
   
   base_url = "https://api-testnet.bybit.com"
-  end_point = "/v5/user/frozen-sub-member"
+  end_point = "/v5/user/delete-sub-api"
   complete_request = base_url + end_point
   
   api_key = "<api_key от биржи bybit>"
@@ -68,10 +72,7 @@
   time_stamp = str(int(time.time() * 1000))
   recv_window = "5000"
   
-  data = {
-      "subuid": 53888001,
-      "frozen": 1,
-  }
+  data = {}
   
   param_str = time_stamp + api_key + recv_window + json.dumps(data)
   
@@ -97,26 +98,21 @@
 
   ```python
   from pybit.unified_trading import HTTP
-
   session = HTTP(
       testnet=True,
       api_key="<api_key от биржи bybit>",
       api_secret="<secret_key от биржи bybit>",
   )
-  print(session.freeze_sub_uid(
-      subuid=53888001,
-      frozen=1,
-  ))
+  print(session.delete_sub_api_key())
   ```
 
 <a id="параметры-запроса"></a>
 
 ## Параметры запроса
 
-| Параметр   | Обязательный | Тип     | Комментарии                                                      | По умолчанию |
-|------------|--------------|---------|------------------------------------------------------------------|--------------|
-| subuid     | Да           | integer | ***Идентификатор sub-UID.***                                     | -            |
-| frozen     | Да           | integer | ***Действие.***<br><br>-  `0`: разморозить<br>- `1`: заморозить  | -            |
+| Параметр | Обязательный | Тип    | Комментарии                                                                                                                                                                                                                            | По умолчанию |
+|----------|--------------|--------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| apikey   | нет          | string | ***Sub-UID API-key.***<br><br>- Обязательно передавайте, если вы используете master-UID для управления настройками sub-UID API-key<br>- Нельзя передавать, если вы вызываете эндпоинт с соответствующим sub-UID API-key (будет ошибка) | -            |
 
 <a id="пример-ответа"></a>
 
@@ -128,7 +124,7 @@
     "retMsg": "",
     "result": {},
     "retExtInfo": {},
-    "time": 1676430697553
+    "time": 1676431924719
 }
 ```
 
