@@ -1,0 +1,210 @@
+- [Информация](#информация)
+- [Конечная точка](#конечная-точка)
+- [Примеры запроса](#примеры-запроса)
+- [Параметры запроса](#параметры-запроса)
+- [Пример ответа](#пример-ответа)
+- [Параметры ответа](#параметры-ответа)
+
+<a id="информация"></a>
+
+## Информация
+
+Запрос баланса для аккаунта UTA в каждой валюте
+
+> Информация:
+>
+> - В соответствии с новой логикой ручного заимствования UTA, поле `spotBorrow`, соответствующее спотовым обязательствам,
+>   подробно описано в [объявлении](https://announcements.bybit.com/en/article/bybit-uta-function-optimization-manual-coin-borrowing-will-be-launched-soon-blt5d858199bd12e849/).
+>
+> - Старый `walletBalance` = Новый `walletBalance` - `spotBorrow`
+
+<a id="конечная-точка"></a>
+
+## Конечная точка
+
+`/v5/account/wallet-balance`
+
+<a id="примеры-запроса"></a>
+
+## Примеры запроса
+
+- HTTP
+
+  ```http
+  GET /v5/account/wallet-balance?accountType=UNIFIED&coin=BTC HTTP/1.1
+  Host: api-testnet.bybit.com
+  X-BAPI-API-KEY: "<api_key от биржи bybit>"
+  X-BAPI-SIGN: <подпись>
+  X-BAPI-TIMESTAMP: 1672125440406
+  X-BAPI-RECV-WINDOW: 5000
+  ```
+
+- собственная реализация
+
+  ```python
+  import time
+  import hmac
+  import hashlib
+  import requests
+
+  from urllib.parse import urlencode
+
+  base_url = "https://api-testnet.bybit.com"
+  end_point = "/v5/account/wallet-balance"
+  complete_request = base_url + end_point
+
+  api_key = "<api_key от биржи bybit>"
+  secret_key = "<secret_key от биржи bybit>"
+  time_stamp = str(int(time.time() * 1000))
+  recv_window = "5000"
+
+  data = {
+      "accountType": "UNIFIED",
+      "coin": "BTC",
+  }
+
+  param_str = time_stamp + api_key + recv_window + urlencode(data)
+  
+  signature = hmac.new(
+      key=secret_key.encode("utf-8"),
+      msg=param_str.encode("utf-8"),
+      digestmod=hashlib.sha256
+  ).hexdigest()
+  
+  headers = {
+    "X-BAPI-API-KEY": api_key,
+    "X-BAPI-SIGN": signature,
+    "X-BAPI-TIMESTAMP": time_stamp,
+    "X-BAPI-RECV-WINDOW": recv_window,
+  }
+
+  response = requests.get(url=complete_request, headers=headers, params=data, timeout=10)
+
+  print(response.json())
+  ```
+
+- pybit
+
+  ```python
+  from pybit.unified_trading import HTTP
+
+  session = HTTP(
+      testnet=True,
+      api_key="<api_key от биржи bybit>",
+      api_secret="<secret_key от биржи bybit>",
+  )
+  print(session.get_wallet_balance(
+      accountType="UNIFIED",
+      coin="BTC",
+  ))
+  ```
+
+<a id="параметры-запроса"></a>
+
+## Параметры запроса
+
+| Параметр                                                                      | Обязательный  | Тип    | Комментарии                                                                                                                                                                                                                                | По умолчанию |
+|-------------------------------------------------------------------------------|---------------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|
+| [accountType](</19.Определения значений в запросах и ответах.md#accountType>) | да            | string | ***Тип аккаунта.***<br><br>- Чтобы получить баланс аккаунта финансирования, пожалуйста, перейдите к этой [конечной точке](</Asset/Balances/Получить баланс аккаунта финансирования.md>)                                                    | -            |
+| coin                                                                          | нет           | string | ***Базовая монета.***<br><br>- Только заглавными буквами<br>- Если не передано, возвращает информацию о активе с ненулевым балансом<br>- Вы можете передать несколько монет для запроса, разделённых запятой. `"USDT","USDC"`              | -            |
+
+<a id="пример-ответа"></a>
+
+## Пример ответа
+
+```json
+{
+    "retCode": 0,
+    "retMsg": "OK",
+    "result": {
+        "list": [
+            {
+                "totalEquity": "3.31216591",
+                "accountIMRate": "0",
+                "accountIMRateByMp": "0",
+                "totalMarginBalance": "3.00326056",
+                "totalInitialMargin": "0",
+                "totalInitialMarginByMp": "0",
+                "accountType": "UNIFIED",
+                "totalAvailableBalance": "3.00326056",
+                "accountMMRate": "0",
+                "accountMMRateByMp": "0",
+                "totalPerpUPL": "0",
+                "totalWalletBalance": "3.00326056",
+                "accountLTV": "0",
+                "totalMaintenanceMargin": "0",
+                "totalMaintenanceMarginByMp": "0",
+                "coin": [
+                    {
+                        "availableToBorrow": "3",
+                        "bonus": "0",
+                        "accruedInterest": "0",
+                        "availableToWithdraw": "0",
+                        "totalOrderIM": "0",
+                        "equity": "0",
+                        "totalPositionMM": "0",
+                        "usdValue": "0",
+                        "spotHedgingQty": "0.01592413",
+                        "unrealisedPnl": "0",
+                        "collateralSwitch": true,
+                        "borrowAmount": "0.0",
+                        "totalPositionIM": "0",
+                        "walletBalance": "0",
+                        "cumRealisedPnl": "0",
+                        "locked": "0",
+                        "marginCollateral": true,
+                        "coin": "BTC",
+                        "spotBorrow": "0"
+                    }
+                ]
+            }
+        ]
+    },
+    "retExtInfo": {},
+    "time": 1690872862481
+}
+```
+
+<a id="параметры-ответа"></a>
+
+## Параметры ответа
+
+| Параметр                   | Тип     | Комментарии                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+|----------------------------|---------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| list                       | array   | ***Массив объектов.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| accountType                | string  | ***Тип аккаунта.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| accountIMRate              | string  | ***Базовая ставка начальной маржи по счёту.***<br><br>- Вы можете обратиться к [этому глоссарию](https://www.bybit.com/en/help-center/article/Glossary-Unified-Trading-Account), чтобы понять расчеты и значение полей ниже<br>- Все поля, относящиеся ко всему аккаунту, не применимы к режиму изолированной маржи                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| accountIMRateByMp          | string  | ***Базовая ставка начальной маржи по счёту.***<br><br>- Вы можете игнорировать это поле и обратиться к `accountIMRate`, где используется тот же расчет                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| accountMMRate              | string  | ***Базовая ставка поддерживающей маржи по счёту.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| accountMMRateByMp          | string  | ***Базовая ставка поддерживающей маржи по счёту.***<br><br>- Вы можете игнорировать это поле и обратиться к `accountMMRate`, где используется тот же расчет                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| totalEquity                | string  | ***Полный баланс аккаунта (USD).***<br><br>- `totalWalletBalance` + общий нереализованный PnL (от любых позиций: `Perpetual`, `spot`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| totalWalletBalance         | string  | ***Чистый баланс аккаунта в кошельке (без PnL или маржи) (USD).***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| totalMarginBalance         | string  | ***Маржинальный баланс аккаунта (USD).***<br><br>- `TotalWalletBalance` + `totalPerpUPL` (PnL только от `Perpetual`)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| totalAvailableBalance      | string  | ***Доступный баланс аккаунта (USD)***.<br><br>Формула зависит от режима маржи:<br>- **Кросс-маржа:** totalMarginBalance − Haircut − totalInitialMargin<br>- **Портфельная маржа:** totalEquity − Haircut − totalInitialMargin<br><br>Haircut - это дисконт или коэффициент дисконтирования (снижение расчетной стоимости актива для целей маржи)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| totalPerpUPL               | string  | ***Нереализованный PnL.***<br><br>- Только `Perpetual` и `futures` (USD)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| totalInitialMargin         | string  | ***Сумма начальной маржи по всем активам (USD).***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| totalInitialMarginByMp     | string  | ***Сумма начальной маржи по всем активам (USD).***<br><br>- Вы можете игнорировать это поле и обратиться к `totalInitialMargin`, где используется тот же расчет                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| totalMaintenanceMargin     | string  | ***Поддерживающая маржа аккаунта (в USD)***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| totalMaintenanceMarginByMp | string  | ***Поддерживающая маржа аккаунта (USD).***<br><br>- Вы можете игнорировать это поле и обратиться к `totalMaintenanceMargin`, где используется тот же расчет                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| coin                       | array   | ***Массив объектов.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| coin                       | string  | ***Название монеты.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| equity                     | string  | ***Собственный капитал по монете.***<br><br>- Формула: `equity` = `walletBalance` − `spotBorrow` + `unrealisedPnl` + стоимость опционных позиций по данному активу                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| usdValue                   | string  | ***Стоимость монеты (USD).***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| walletBalance              | string  | ***Баланс монет в кошельке.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| locked                     | string  | ***Заблокированный баланс из-за открытого ордера `spot`.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| spotHedgingQty             | string  | ***Количество спотовых активов, используемых для хеджирования маржи портфеля.***<br><br>- Округляется до 8 знаков после запятой<br>- По умолчанию равно `0`.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| borrowAmount               | string  | ***Сумма займов по текущей монете.***<br><br>- Формула: `borrowAmount` =  обязательства по споту + обязательства по производным инструментам                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| accruedInterest            | string  | ***Начисленные проценты.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| totalOrderIM               | string  | ***Предварительно заблокированная маржа под ордер.***<br><br>- В режиме портфельной маржи возвращается `""`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| totalPositionIM            | string  | ***Сумма начальной маржи по всем позициям + предварительно заблокированная комиссия за ликвидацию.***<br><br>- Для режима портфельной маржи возвращается `""`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| totalPositionMM            | string  | ***Сумма маржи для поддержания всех позиций.***<br><br>- В режиме портфельной маржи возвращается `""`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| unrealisedPnl              | string  | ***Нереализованные прибыли и убытки.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| cumRealisedPnl             | string  | ***Накопленные реализованные прибыли и убытки.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| bonus                      | string  | ***Бонус.***                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| marginCollateral           | boolean | ***Может ли использоваться в качестве залоговой валюты для маржи.***<br><br>- Если `marginCollateral`=`true`, то `collateralSwitch` имеет смысл                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| collateralSwitch           | boolean | ***Включено ли использование в качестве залога пользователем.***<br><br>- Если `marginCollateral`=`true`, то `collateralSwitch` имеет смысл                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| spotBorrow                 | string  | ***Сумма займов, полученных через спотовую маржинальную торговлю и вручную.***<br><br>- Не включает сумму займа по активному ордеру спотовой маржи<br> Поле `spotBorrow`, соответствующее спот-обязательствам, подробно описано в [анонсе](https://announcements.bybit.com/en/article/bybit-uta-function-optimization-manual-coin-borrowing-will-be-launched-soon-blt5d858199bd12e849/).                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| availableToWithdraw        | string  | **Устаревшее поле для `accountType`=UNIFIED**<br><br>***Доступный для вывода и внутренних переводов баланс монеты.***<br><br>- Получить актуальные данные для аккаунта UTA:<br>[Получить сумму для перевода (Единый)](<Получить сумму для перевода (Единый).md>) или [Получить баланс аккаунта финансирования](</Asset/Balances/Получить баланс аккаунта финансирования.md>)<br>- Расчитать актуальные данные для деривативов:<br>&nbsp;&nbsp;&nbsp;*изолированная маржа:*<br>`walletBalance` - `totalPositionIM` - `totalOrderIM` - `locked` - `bonus` <br>&nbsp;&nbsp;&nbsp;*кросс-маржа и портфельная маржа:*<br>рассчитывается на основе поля `totalAvailableBalance`, конвертируется в баланс конкретной монеты по её индексной цене<br>&nbsp;&nbsp;&nbsp;*доступный баланс спотовой (маржинальной) позиции:*<br>см. раздел [Получить лимит займа на споте](</Trade/Получить лимит займа на споте.md>)    |
+| availableToBorrow          | string  | **Устаревшее поле.**<br><br>- Всегда возвращает `""` см. параметр `availableToBorrow` в разделе [Получить информацию об обеспечении](<Получить информацию об обеспечении.md>)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| accountLTV                 | string  | **Устаревшее поле.**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| free                       | string  | **Устаревшее поле.**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |

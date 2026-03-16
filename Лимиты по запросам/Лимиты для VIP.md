@@ -8,7 +8,7 @@
 	<tbody>
 		<tr>
 			<td></td>
-			<td colspan="3" align="center"><b>Единый аккаунт</b></td>
+			<td colspan="3" align="center"><b>Аккаунт UTA</b></td>
 		</tr>
 		<tr>
 			<td><b>Уровень</b></td>
