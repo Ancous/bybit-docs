@@ -110,10 +110,10 @@
     "retCode": 0,
     "retMsg": "",
     "result": {
-        "id": "13770661",
-        "note": "readwrite api key",
-        "apiKey": "XXXXXX",
-        "readOnly": 0,
+        "id": "2208369",
+        "note": "testnet",
+        "apiKey": "XXXXXXXX",
+        "readOnly": 1,
         "secret": "",
         "permissions": {
             "ContractTrade": [
@@ -127,39 +127,65 @@
                 "AccountTransfer",
                 "SubMemberTransfer"
             ],
-            "Options": [
-                "OptionsTrade"
+            "Options": [],
+            "Derivatives": [
+                "DerivativesTrade"
             ],
-            "Derivatives": [],
             "CopyTrading": [],
             "BlockTrade": [],
-            "Exchange": [],
+            "Exchange": [
+                "ExchangeHistory"
+            ],
             "NFT": [],
             "Affiliate": [],
-            "Earn": []
+            "Earn": [
+                "Earn"
+            ],
+            "FiatP2P": [
+                "FiatP2POrder",
+                "Advertising"
+            ],
+            "FiatConvertBroker": [
+                "FiatConvertBrokerOrder"
+            ],
+            "FiatGlobalPay": [],
+            "FiatBitPay": [
+                "FaitPayOrder"
+            ],
+            "BitCard": [
+                "BitCard"
+            ],
+            "ByXPost": [
+                "ByXPost"
+            ]
         },
         "ips": [
-            "*"
+            "18.181.170.164",
+            "13.212.45.47",
+            "13.212.45.48"
         ],
         "type": 1,
-        "deadlineDay": 66,
-        "expiredAt": "2023-12-22T07:20:25Z",
-        "createdAt": "2022-10-16T02:24:40Z",
+        "deadlineDay": -2,
+        "expiredAt": "1970-01-01T00:00:00Z",
+        "createdAt": "2025-10-13T03:20:45Z",
         "unified": 0,
-        "uta": 0,
-        "userID": 24617703,
+        "uta": 1,
+        "userID": 1448939,
         "inviterID": 0,
-        "vipLevel": "No VIP",
+        "vipLevel": "PRO-1",
         "mktMakerLevel": "0",
         "affiliateID": 0,
         "rsaPublicKey": "",
         "isMaster": true,
         "parentUid": "0",
-        "kycLevel": "LEVEL_DEFAULT",
-        "kycRegion": ""
+        "kycLevel": "LEVEL_1",
+        "kycRegion": "MYS",
+        "userIDInt64": "0",
+        "inviterIDInt64": "0",
+        "affiliateIDInt64": "0"
     },
     "retExtInfo": {},
-    "time": 1697525990798
+    "time": 1776149990532
 }
 ```
 
@@ -167,39 +193,44 @@
 
 ## Параметры ответа
 
-| Параметр      | Тип      | Комментарии                                                                                                                                             |
-|---------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| id            | string   | ***Уникальный ID.***                                                                                                                                    |
-| note          | string   | ***Заметка к API-key.***                                                                                                                                |
-| apiKey        | string   | ***API-key.***                                                                                                                                          |
-| readOnly      | integer  | ***Уровень доступа.***<br><br>- `0`: Чтение и запись<br>- `1`: Только чтение                                                                            |
-| secret        | string   | ***Всегда возвращает `""`.***                                                                                                                           |
-| permissions   | object   | ***Настроенные типы разрешений.***                                                                                                                      |
-| ContractTrade | array    | ***Разрешения для контрактной торговли.***<br><br>- `Order`, `Position`                                                                                 |
-| Spot          | array    | ***Разрешения для спотовой торговли.***<br><br>- `SpotTrade`                                                                                            |
-| Wallet        | array    | ***Разрешения для кошелька.***<br><br>- `AccountTransfer`<br>- `SubMemberTransfer` (master)<br>- `SubMemberTransferList` (sub)<br>- `Withdraw` (master) |
-| Options       | array    | ***Разрешения для контрактов USDC.***<br><br>- `OptionsTrade`                                                                                           |
-| Derivatives   | array    | ***Разрешение по умолчанию.***<br><br>- `DerivativesTrade`                                                                                              |
-| Exchange      | array    | ***Разрешения для конвертации.***<br><br>- `ExchangeHistory`                                                                                            |
-| Earn          | array    | ***Разрешения для продуктов Earn.***<br><br>- `Earn`                                                                                                    |
-| NFT           | array    | **Устаревшее поле.**<br><br>- Всегда `[]`                                                                                                               |
-| BlockTrade    | array    | ***Разрешения для блочных сделок.***<br><br>- Неприменимо к sub-UID<br>- Всегда `[]`                                                                    |
-| Affiliate     | array    | ***Разрешения для партнёрской программы.***<br><br>- Только у партнёров, иначе `[]`                                                                     |
-| CopyTrading   | array    | Всегда `[]`, так как мастер-трейдеры используют разрешение `ContractTrade` для CopyTrading                                                              |
-| ips           | array    | ***Список IP-адресов, к которым привязан ключ.***                                                                                                       |
-| type          | integer  | ***Тип API-key.***<br><br>- `1`: Персональный.<br>- `2`: Подключен к стороннему приложению                                                              |
-| deadlineDay   | integer  | ***Оставшееся количество дней действия API-key.***<br><br>- Только для ключей без привязки к IP или если пароль аккаунта был изменён                    |
-| expiredAt     | datetime | ***Дата истечения срока действия API-key.***<br><br>- Только для ключей без привязки к IP или если пароль аккаунта был изменён                          |
-| createdAt     | datetime | ***Дата создания API-key.***                                                                                                                            |
-| unified       | integer  | **Устаревшее поле.**                                                                                                                                    |
-| uta           | integer  | ***Перешёл ли аккаунт на унифицированную торговлю.***<br><br>- `0`: обычный аккаунт<br>- `1`: унифицированный торговый аккаунт                          |
-| userID        | integer  | ***UID.***                                                                                                                                              |
-| inviterID     | integer  | ***UID пригласившего.***                                                                                                                                |
-| vipLevel      | string   | ***VIP-уровень.***                                                                                                                                      |
-| mktMakerLevel | string   | ***Уровень маркет-мейкера.***                                                                                                                           |
-| affiliateID   | integer  | ***ID партнёрской программы.***<br><br>- `0` означает отсутствие привязки                                                                               |
-| rsaPublicKey  | string   | ***RSA-публичный ключ.***                                                                                                                               |
-| isMaster      | boolean  | ***Принадлежит ли этот API-key master-UID.***                                                                                                           |
-| parentUid     | string   | ***UID основного аккаунта.***<br><br>- Возвращает `0`, если метод вызван с основного аккаунта                                                           |
-| kycLevel      | string   | ***Уровень верификации (KYC) для персонального аккаунта.***<br><br>- `LEVEL_DEFAULT`, `LEVEL_1`, `LEVEL_2`                                              |
-| kycRegion     | string   | ***Регион верификации (KYC) для персонального аккаунта.***                                                                                              |
+| Параметр            | Тип      | Комментарии                                                                                                                                             |
+|---------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
+| id                  | string   | ***Уникальный ID.***                                                                                                                                    |
+| note                | string   | ***Заметка к API-key.***                                                                                                                                |
+| apiKey              | string   | ***API-key.***                                                                                                                                          |
+| readOnly            | integer  | ***Уровень доступа.***<br><br>- `0`: Чтение и запись<br>- `1`: Только чтение                                                                            |
+| secret              | string   | ***Всегда возвращает `""`.***                                                                                                                           |
+| permissions         | object   | ***Настроенные типы разрешений.***                                                                                                                      |
+| ContractTrade       | array    | ***Разрешения для контрактной торговли.***<br><br>- `Order`, `Position`                                                                                 |
+| Spot                | array    | ***Разрешения для спотовой торговли.***<br><br>- `SpotTrade`                                                                                            |
+| Wallet              | array    | ***Разрешения для кошелька.***<br><br>- `AccountTransfer`<br>- `SubMemberTransfer` (master)<br>- `SubMemberTransferList` (sub)<br>- `Withdraw` (master) |
+| Options             | array    | ***Разрешения для контрактов USDC.***<br><br>- `OptionsTrade`                                                                                           |
+| Derivatives         | array    | ***Разрешение по умолчанию.***<br><br>- `DerivativesTrade`                                                                                              |
+| Exchange            | array    | ***Разрешения для конвертации.***<br><br>- `ExchangeHistory`                                                                                            |
+| Earn                | array    | ***Разрешения для продуктов Earn.***<br><br>- `Earn`                                                                                                    |
+| FiatP2P             | array    | ***Разрешения для P2P.***<br><br>- `FiatP2POrder`<br>- `Advertising`<br>- Не применяется к sub-аккаунту, всегда возвращает `[]`                         |
+| FiatBitPay          | array    | ***Разрешения для Bybit Pay.***<br><br>- `FiatP2POrder`<br>- `Advertising`<br>- Не применяется к sub-аккаунту, всегда возвращает `[]`                   |
+| FiatConvertBroker   | array    | ***Разрешения для фиатный конверт-брокер.***<br><br>- `FiatConvertBroker`<br>- Не применяется к sub-аккаунту, всегда возвращает `[]`                    |
+| BitCard             | array    | ***Разрешения на использование карты Bybit.***<br><br>- `BitCard`<br>- Не применяется к sub-аккаунту                                                    |
+| ByXPost             | array    | ***Разрешения на публикацию в сообществе.***<br><br>- `ByXPost`<br>- Не применяется к sub-аккаунту                                                      |
+| Affiliate           | array    | ***Разрешения для партнёрской программы.***<br><br>- Только у партнёров, иначе `[]`                                                                     |
+| BlockTrade          | array    | ***Разрешения для блочных сделок.***<br><br>- Неприменимо к sub-UID<br>- Всегда `[]`                                                                    |
+| ips                 | array    | ***Список IP-адресов, к которым привязан ключ.***                                                                                                       |
+| type                | integer  | ***Тип API-key.***<br><br>- `1`: Персональный.<br>- `2`: Подключен к стороннему приложению                                                              |
+| deadlineDay         | integer  | ***Оставшееся количество дней действия API-key.***<br><br>- Только для ключей без привязки к IP или если пароль аккаунта был изменён                    |
+| expiredAt           | datetime | ***Дата истечения срока действия API-key.***<br><br>- Только для ключей без привязки к IP или если пароль аккаунта был изменён                          |
+| createdAt           | datetime | ***Дата создания API-key.***                                                                                                                            |
+| uta                 | integer  | ***Перешёл ли аккаунт на унифицированную торговлю.***<br><br>- `0`: обычный аккаунт<br>- `1`: унифицированный торговый аккаунт                          |
+| userID              | integer  | ***UID.***                                                                                                                                              |
+| inviterID           | integer  | ***UID пригласившего.***                                                                                                                                |
+| vipLevel            | string   | ***VIP-уровень.***                                                                                                                                      |
+| mktMakerLevel       | string   | ***Уровень маркет-мейкера.***                                                                                                                           |
+| affiliateID         | integer  | ***ID партнёрской программы.***<br><br>- `0` означает отсутствие привязки                                                                               |
+| rsaPublicKey        | string   | ***RSA-публичный ключ.***                                                                                                                               |
+| isMaster            | boolean  | ***Принадлежит ли этот API-key master-UID.***                                                                                                           |
+| parentUid           | string   | ***UID основного аккаунта.***<br><br>- Возвращает `0`, если метод вызван с основного аккаунта                                                           |
+| kycLevel            | string   | ***Уровень верификации (KYC) для персонального аккаунта.***<br><br>- `LEVEL_DEFAULT`, `LEVEL_1`, `LEVEL_2`                                              |
+| kycRegion           | string   | ***Регион верификации (KYC) для персонального аккаунта.***                                                                                              |
+| CopyTrading         | array    | **Устаревшее поле.**<br><br>- Всегда `[]`                                                                                                               |
+| NFT                 | array    | **Устаревшее поле.**<br><br>- Всегда `[]`                                                                                                               |
+| unified             | integer  | **Устаревшее поле.**                                                                                                                                    |
